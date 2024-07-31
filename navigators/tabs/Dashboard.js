@@ -18,18 +18,20 @@ import {
 } from "@expo/vector-icons";
 import CheckboxInput from "../../component/Inputs/CheckboxInput";
 import moment from "moment-jalaali";
-// import AddTaskAndRoutine from "../container/AddTaskAndRoutine";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import _ from "lodash";
 import DashboardChart from "../../component/DashboardChart";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLang, changeThemeMood } from "../../store";
+import AddTaskAndRoutine from "../../component/AddTaskAndRoutine";
 
 function Dashboard({ i18n }) {
   const dispatch = useDispatch();
   const { themeMood, lang, routines, plans } = useSelector(
     (state) => state.app
   );
+
+  console.log("plans", plans);
 
   moment.locale(lang);
   if (lang == "fa") {
@@ -96,7 +98,7 @@ function Dashboard({ i18n }) {
 
   const checked = async ({ type, id }) => {
     let existingArray = [];
-    if (type == "tasks") {
+    if (type == "plans") {
       const existingData = await AsyncStorage.getItem(type);
       if (existingData) {
         existingArray = JSON.parse(existingData);
@@ -115,7 +117,7 @@ function Dashboard({ i18n }) {
 
   const deleteTaskAndRoutine = async ({ type, id }) => {
     let existingArray = [];
-    if (type == "tasks") {
+    if (type == "plans") {
       const existingData = await AsyncStorage.getItem(type);
       if (existingData) {
         existingArray = JSON.parse(existingData);
@@ -128,7 +130,6 @@ function Dashboard({ i18n }) {
     }
     const newArray = _.filter(existingArray, (item) => item.id != id && item);
     await AsyncStorage.setItem(type, JSON.stringify(newArray));
-    refetchTasksAndRoutines();
   };
 
   const handleOpenAddModal = () => setOpenAddModal(true);
@@ -139,7 +140,7 @@ function Dashboard({ i18n }) {
 
   const editTaskAndRoutine = async ({ type, id }) => {
     let existingArray = [];
-    if (type == "tasks") {
+    if (type == "plans") {
       const existingData = await AsyncStorage.getItem(type);
       if (existingData) {
         existingArray = JSON.parse(existingData);
@@ -447,7 +448,7 @@ function Dashboard({ i18n }) {
       )}
 
       <View style={styles.container}>
-        {/* {openAddModal && (
+        {openAddModal && (
           <AddTaskAndRoutine
             open={openAddModal}
             close={handleCloseAddModal}
@@ -456,9 +457,9 @@ function Dashboard({ i18n }) {
             setEditData={setEditData}
             i18n={i18n}
             lang={lang}
-            themeApp={themeMood}
+            themeMode={themeMood}
           />
-        )} */}
+        )}
 
         {chartData && (
           <DashboardChart lang={lang} theme={theme} data={chartData} />
