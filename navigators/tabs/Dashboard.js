@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeLang, changeThemeMood } from "../../store";
 import AddTaskAndRoutine from "../../component/AddTaskAndRoutine";
 
-function Dashboard({ i18n }) {
+const Dashboard = ({ i18n }) => {
   const dispatch = useDispatch();
   const { themeMood, lang, routines, plans } = useSelector(
     (state) => state.app
@@ -626,6 +626,6 @@ function Dashboard({ i18n }) {
       </View>
     </ScrollView>
   );
-}
+};
 
 export default Dashboard;
