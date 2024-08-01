@@ -47,7 +47,11 @@ const Dashboard = ({ i18n }) => {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [routinesToday, setRoutinesToday] = useState([]);
   const [tasksToday, setTasksToday] = useState([]);
-  const [chartData, setChartData] = useState(false);
+  const [chartData, setChartData] = useState({
+    labels: [],
+    colors: [],
+    data: [],
+  });
   const [editData, setEditData] = useState();
   const [visible, setVisible] = useState(false);
 
@@ -471,9 +475,7 @@ const Dashboard = ({ i18n }) => {
           />
         )}
 
-        {chartData && (
-          <DashboardChart lang={lang} theme={theme} data={chartData} />
-        )}
+        <DashboardChart lang={lang} theme={theme} data={chartData} />
 
         <List.Section style={{ width: "100%" }}>
           {routinesToday.length > 0 && (
