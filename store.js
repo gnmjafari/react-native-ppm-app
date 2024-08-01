@@ -23,14 +23,10 @@ export const appSlice = createSlice({
     },
 
     updatePlans: (state, action) => {
-      console.log("action", action.payload);
-
       state.plans = action.payload;
     },
 
     updateRoutines: (state, action) => {
-      // console.log("action", action);
-
       state.routines = action.payload;
     },
 
@@ -42,9 +38,36 @@ export const appSlice = createSlice({
 
     addRoutine: (state, action) => {
       const { payload } = action;
-      console.log("payload", payload);
+
       const concat = _.concat(state.routines, payload);
       state.routines = concat;
+    },
+
+    deletePlan: (state, action) => {
+      const { payload } = action;
+
+      const newArray = _.filter(
+        state.plans,
+        (item) => item.id != payload && item
+      );
+      state.plans = newArray;
+    },
+
+    deleteRoutine: (state, action) => {
+      const { payload } = action;
+      const newArray = _.filter(
+        state.routines,
+        (item) => item.id != payload && item
+      );
+      state.routines = newArray;
+    },
+    checkedPlanOrRoutine: (state, action) => {
+      const { payload } = action;
+      if (payload.type == "plans") {
+        state.plans = payload.data;
+      } else if (payload.type == "routine") {
+        state.routines = payload.data;
+      }
     },
   },
 });
@@ -65,4 +88,7 @@ export const {
   updateRoutines,
   addPlan,
   addRoutine,
+  deletePlan,
+  deleteRoutine,
+  checkedPlanOrRoutine,
 } = appSlice.actions;

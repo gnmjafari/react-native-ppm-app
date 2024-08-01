@@ -28,7 +28,6 @@ const TabNavigators = ({ i18n }) => {
   };
 
   useEffect(() => {
-    console.log("useEffect");
     getPlans();
   }, []);
 
