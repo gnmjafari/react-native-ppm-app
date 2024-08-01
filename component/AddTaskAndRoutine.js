@@ -15,7 +15,7 @@ import _ from "lodash";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Calendar } from "react-native-multipurpose-calendar";
 import { useDispatch } from "react-redux";
-import { addPlan } from "../store";
+import { addPlan, addRoutine } from "../store";
 
 const days = [
   "sunday",
@@ -48,78 +48,70 @@ const AddTaskAndRoutine = ({
   } = useForm({ defaultValues: editData && editData.data });
 
   const onSubmit = async (data) => {
-    dispatch(
-      addPlan({
-        data,
-        onSuccess: () => {
-          close();
-          reset();
-          setAddType("plans");
-        },
-      })
-    );
-    // try {
-    //   let createData;
-    //   let existingArray = [];
+    try {
+      let createData;
+      let existingArray = [];
 
-    //   const existingData = await AsyncStorage.getItem(addType);
-    // if (existingData) {
-    //   existingArray = JSON.parse(existingData);
-    // }
+      const existingData = await AsyncStorage.getItem(addType);
+      if (existingData) {
+        existingArray = JSON.parse(existingData);
+      }
 
-    //   const createId = existingArray ? Number(existingArray.length) + 1 : 1;
+      const createId = existingArray ? Number(existingArray.length) + 1 : 1;
 
-    //   if (addType == "tasks") {
-    //     createData = {
-    //       id: data?.id || `${createId}_tasks`,
-    //       title: data.title,
-    //       date: data.date,
-    //       description: data.description,
-    //       checked: false,
-    //       type: "tasks",
-    //     };
-    //   } else {
-    //     let daysToAdd = [];
-    //     const startDate = new Date(data.start_routine);
-    //     const endDate = new Date(data.end_routine);
-    //     const repeatingDays = data.repeating;
+      if (addType == "plans") {
+        createData = {
+          id: data?.id || `${createId}_plans`,
+          title: data.title,
+          date: data.date,
+          description: data.description,
+          checked: false,
+          type: "plans",
+        };
+        dispatch(addPlan(createData));
+      } else if (addType == "routines") {
+        let daysToAdd = [];
+        const startDate = new Date(data.start_routine);
+        const endDate = new Date(data.end_routine);
+        const repeatingDays = data.repeating;
 
-    //     while (startDate <= endDate) {
-    //       const dayIndex = startDate.getDay();
-    //       if (repeatingDays.includes(days[dayIndex])) {
-    //         daysToAdd.push(new Date(startDate));
-    //       }
-    //       startDate.setDate(startDate.getDate() + 1);
-    //     }
+        while (startDate <= endDate) {
+          const dayIndex = startDate.getDay();
+          if (repeatingDays.includes(days[dayIndex])) {
+            daysToAdd.push(new Date(startDate));
+          }
+          startDate.setDate(startDate.getDate() + 1);
+        }
 
-    //     createData = daysToAdd.map((day, index) => ({
-    //       id: data?.id || `${createId + index}_routines`,
-    //       title: data.title,
-    //       date: day.toISOString().split("T")[0],
-    //       description: data.description,
-    //       repeating: repeatingDays,
-    //       checked: false,
-    //       type: "routines",
-    //     }));
-    //   }
+        createData = daysToAdd.map((day, index) => ({
+          id: data?.id || `${createId + index}_routines`,
+          title: data.title,
+          date: day.toISOString().split("T")[0],
+          description: data.description,
+          repeating: repeatingDays,
+          checked: false,
+          type: "routines",
+        }));
 
-    //   if (editData) {
-    //     const editArray = _.map(existingArray, (item) =>
-    //       item.id == data.id ? createData : item
-    //     );
-    //     existingArray = editArray;
-    //   } else {
-    //     existingArray = _.concat(existingArray || [], createData);
-    //   }
+        dispatch(addRoutine(createData));
+      }
 
-    //   await AsyncStorage.setItem(addType, JSON.stringify(existingArray));
-    //   close();
-    //   reset();
-    //   setAddType("tasks");
-    //   refetch();
-    // } catch (error) {
-    //   console.error("Error storing/retrieving data:", error);
-    // }
+      if (editData) {
+        const editArray = _.map(existingArray, (item) =>
+          item.id == data.id ? createData : item
+        );
+        existingArray = editArray;
+      } else {
+        existingArray = _.concat(existingArray || [], createData);
+      }
+
+      await AsyncStorage.setItem(addType, JSON.stringify(existingArray));
+      close();
+      reset();
+      setAddType("plans");
+    } catch (error) {
+      console.error("Error storing/retrieving data:", error);
+    }
   };
 
   return (

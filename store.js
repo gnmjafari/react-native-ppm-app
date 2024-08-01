@@ -1,6 +1,7 @@
 import devToolsEnhancer from "redux-devtools-expo-dev-plugin";
 import { createSlice, combineSlices, configureStore } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import _ from "lodash";
 
 export const appSlice = createSlice({
   name: "app",
@@ -35,38 +36,15 @@ export const appSlice = createSlice({
 
     addPlan: (state, action) => {
       const { payload } = action;
+
+      state.plans.push(payload);
+    },
+
+    addRoutine: (state, action) => {
+      const { payload } = action;
       console.log("payload", payload);
-
-      const createId = state.plans ? Number(state.plans.length) + 1 : 1;
-      const createData = {
-        id: payload.data?.id || `${createId}_tasks`,
-        title: payload.data.title,
-        date: payload.data.date,
-        description: payload.data.description,
-        checked: false,
-        type: "tasks",
-      };
-
-      const newPlans = [...state.plans, createData];
-
-      console.log("newPlans", newPlans);
-
-      state.plans.push(createData);
-
-      // add to AsyncStorage
-      // const setTOAsyncStorage = async () => {
-      //   try {
-      //     await AsyncStorage.setItem("plans", JSON.stringify(newPlans));
-      //   } catch (error) {
-      //     console.log("catch error : ", error);
-      //   }
-      // };
-
-      // setTOAsyncStorage();
-
-      if (payload.onSuccess != "undefined") {
-        return payload.onSuccess();
-      }
+      const concat = _.concat(state.routines, payload);
+      state.routines = concat;
     },
   },
 });
@@ -86,4 +64,5 @@ export const {
   updatePlans,
   updateRoutines,
   addPlan,
+  addRoutine,
 } = appSlice.actions;
