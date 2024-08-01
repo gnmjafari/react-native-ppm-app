@@ -68,7 +68,10 @@ const AddTaskAndRoutine = ({
           checked: false,
           type: "plans",
         };
-        dispatch(addPlan(createData));
+
+        if (!editData) {
+          dispatch(addPlan(createData));
+        }
       } else if (addType == "routines") {
         let daysToAdd = [];
         const startDate = new Date(data.start_routine);
@@ -92,8 +95,9 @@ const AddTaskAndRoutine = ({
           checked: false,
           type: "routines",
         }));
-
-        dispatch(addRoutine(createData));
+        if (!editData) {
+          dispatch(addRoutine(createData));
+        }
       }
 
       if (editData) {

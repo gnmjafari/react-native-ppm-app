@@ -22,7 +22,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import _ from "lodash";
 import DashboardChart from "../../component/DashboardChart";
 import { useDispatch, useSelector } from "react-redux";
-import { changeLang, changeThemeMood } from "../../store";
+import {
+  changeLang,
+  changeThemeMood,
+  checkedPlanOrRoutine,
+  deletePlan,
+  deleteRoutine,
+} from "../../store";
 import AddTaskAndRoutine from "../../component/AddTaskAndRoutine";
 
 const Dashboard = ({ i18n }) => {
@@ -112,6 +118,8 @@ const Dashboard = ({ i18n }) => {
     const newArray = _.map(existingArray, (item) =>
       item.id == id ? { ...item, checked: !item.checked } : item
     );
+
+    dispatch(checkedPlanOrRoutine({ type, data: newArray }));
     await AsyncStorage.setItem(type, JSON.stringify(newArray));
   };
 
@@ -122,11 +130,13 @@ const Dashboard = ({ i18n }) => {
       if (existingData) {
         existingArray = JSON.parse(existingData);
       }
-    } else {
+      dispatch(deletePlan(id));
+    } else if (type == "routines") {
       const existingData = await AsyncStorage.getItem(type);
       if (existingData) {
         existingArray = JSON.parse(existingData);
       }
+      dispatch(deleteRoutine(id));
     }
     const newArray = _.filter(existingArray, (item) => item.id != id && item);
     await AsyncStorage.setItem(type, JSON.stringify(newArray));
@@ -570,7 +580,7 @@ const Dashboard = ({ i18n }) => {
                             <CheckboxInput
                               status={item.checked}
                               onPressCustom={() => {
-                                checked({ type: "tasks", id: item.id });
+                                checked({ type: "plans", id: item.id });
                               }}
                             />
                           )}
@@ -594,7 +604,7 @@ const Dashboard = ({ i18n }) => {
                                 color={color}
                                 onPress={() => {
                                   deleteTaskAndRoutine({
-                                    type: "tasks",
+                                    type: "plans",
                                     id: item.id,
                                   });
                                 }}
@@ -605,7 +615,7 @@ const Dashboard = ({ i18n }) => {
                                 color={color}
                                 onPress={() => {
                                   editTaskAndRoutine({
-                                    type: "tasks",
+                                    type: "plans",
                                     id: item.id,
                                   });
                                 }}
