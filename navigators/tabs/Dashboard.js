@@ -556,84 +556,84 @@ const Dashboard = ({ i18n }) => {
               </List.Accordion>
             </Card>
           )}
-          {tasksToday.length > 0 && (
-            <Card style={{ marginHorizontal: 10, marginVertical: 20 }}>
-              <List.Accordion
-                titleStyle={{
-                  fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-                }}
-                title={i18n.t("tasks")}
-                left={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon={({ size, color }) => (
-                      <FontAwesome5 name="tasks" size={size} color={color} />
+          {/* {tasksToday.length > 0 && ( */}
+          <Card style={{ marginHorizontal: 10, marginVertical: 20 }}>
+            <List.Accordion
+              titleStyle={{
+                fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+              }}
+              title={i18n.t("tasks")}
+              left={(props) => (
+                <List.Icon
+                  {...props}
+                  icon={({ size, color }) => (
+                    <FontAwesome5 name="tasks" size={size} color={color} />
+                  )}
+                />
+              )}
+            >
+              {_.map(tasksToday, (item, index) => {
+                return (
+                  <List.Item
+                    left={(props) => (
+                      <List.Icon
+                        {...props}
+                        icon={({ size, color }) => (
+                          <CheckboxInput
+                            status={item.checked}
+                            onPressCustom={() => {
+                              checked({ type: "plans", id: item.id });
+                            }}
+                          />
+                        )}
+                      />
                     )}
-                  />
-                )}
-              >
-                {_.map(tasksToday, (item, index) => {
-                  return (
-                    <List.Item
-                      left={(props) => (
-                        <List.Icon
-                          {...props}
-                          icon={({ size, color }) => (
-                            <CheckboxInput
-                              status={item.checked}
-                              onPressCustom={() => {
-                                checked({ type: "plans", id: item.id });
+                    right={(props) => (
+                      <List.Icon
+                        {...props}
+                        icon={({ size, color }) => (
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              gap: 10,
+                            }}
+                          >
+                            <AntDesign
+                              name="delete"
+                              size={size}
+                              color={color}
+                              onPress={() => {
+                                deleteTaskAndRoutine({
+                                  type: "plans",
+                                  id: item.id,
+                                });
                               }}
                             />
-                          )}
-                        />
-                      )}
-                      right={(props) => (
-                        <List.Icon
-                          {...props}
-                          icon={({ size, color }) => (
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                gap: 10,
+                            <AntDesign
+                              name="edit"
+                              size={size}
+                              color={color}
+                              onPress={() => {
+                                editTaskAndRoutine({
+                                  type: "plans",
+                                  id: item.id,
+                                });
                               }}
-                            >
-                              <AntDesign
-                                name="delete"
-                                size={size}
-                                color={color}
-                                onPress={() => {
-                                  deleteTaskAndRoutine({
-                                    type: "plans",
-                                    id: item.id,
-                                  });
-                                }}
-                              />
-                              <AntDesign
-                                name="edit"
-                                size={size}
-                                color={color}
-                                onPress={() => {
-                                  editTaskAndRoutine({
-                                    type: "plans",
-                                    id: item.id,
-                                  });
-                                }}
-                              />
-                            </View>
-                          )}
-                        />
-                      )}
-                      key={index}
-                      title={item.title}
-                    />
-                  );
-                })}
-              </List.Accordion>
-            </Card>
-          )}
+                            />
+                          </View>
+                        )}
+                      />
+                    )}
+                    key={index}
+                    title={item.title}
+                  />
+                );
+              })}
+            </List.Accordion>
+          </Card>
+          {/* )} */}
         </List.Section>
       </View>
     </ScrollView>
