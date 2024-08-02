@@ -12,14 +12,14 @@ export const appSlice = createSlice({
     routines: [],
   },
   reducers: {
-    changeLang: (state) => {
-      const newLang = state.lang === "en" ? "fa" : "en";
-      state.lang = newLang;
+    changeLang: (state, action) => {
+      const { payload } = action;
+      state.lang = payload;
     },
 
-    changeThemeMood: (state) => {
-      const newThemeMood = state.themeMood === "dark" ? "light" : "dark";
-      state.themeMood = newThemeMood;
+    changeThemeMood: (state, action) => {
+      const { payload } = action;
+      state.themeMood = payload;
     },
 
     updatePlans: (state, action) => {

@@ -3,7 +3,6 @@ import TabNavigators from "../navigators/TabNavigators";
 import { useDispatch, useSelector } from "react-redux";
 import { useMaterial3Theme } from "@pchmn/expo-material3-theme/build";
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
-import { en } from "../lang/en";
 import { fa } from "../lang/fa";
 import { I18n } from "i18n-js";
 
@@ -12,12 +11,14 @@ const Index = () => {
   const { themeMood, lang } = useSelector((state) => state.app);
 
   const translations = {
-    en: en,
-    fa: fa,
+    en: require("../lang/en.json"),
+    fa: require("../lang/fa.json"),
   };
 
   const i18n = new I18n(translations);
+
   i18n.locale = lang;
+  i18n.enableFallback = true;
 
   const paperTheme =
     themeMood === "dark"

@@ -22,13 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import _ from "lodash";
 import DashboardChart from "../../component/DashboardChart";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  changeLang,
-  changeThemeMood,
-  checkedPlanOrRoutine,
-  deletePlan,
-  deleteRoutine,
-} from "../../store";
+import { changeLang, changeThemeMood } from "../../store";
 import AddTaskAndRoutine from "../../component/AddTaskAndRoutine";
 import {
   changeChecked,
@@ -134,7 +128,7 @@ const Dashboard = ({ i18n }) => {
   };
 
   useEffect(() => {
-    createChartData(tasksToday, routinesToday, i18n, theme,setChartData);
+    createChartData(tasksToday, routinesToday, i18n, theme, setChartData);
   }, [tasksToday, routinesToday]);
 
   return (
@@ -234,7 +228,15 @@ const Dashboard = ({ i18n }) => {
               <Switch
                 style={{ width: 50 }}
                 value={themeMood == "dark"}
-                onValueChange={() => dispatch(changeThemeMood())}
+                onValueChange={async () => {
+                  dispatch(
+                    changeThemeMood(themeMood == "dark" ? "light" : "dark")
+                  );
+                  await AsyncStorage.setItem(
+                    "theme",
+                    themeMood == "dark" ? "light" : "dark"
+                  );
+                }}
               />
 
               <Text
@@ -265,7 +267,14 @@ const Dashboard = ({ i18n }) => {
               <Switch
                 style={{ width: 50 }}
                 value={lang == "en"}
-                onValueChange={() => dispatch(changeLang())}
+                onValueChange={async () => {
+                  dispatch(changeLang(lang == "en" ? "fa" : "fa"));
+
+                  await AsyncStorage.setItem(
+                    "lang",
+                    lang == "en" ? "fa" : "fa"
+                  );
+                }}
               />
               <Text
                 style={{
