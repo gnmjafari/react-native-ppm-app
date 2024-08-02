@@ -6,7 +6,7 @@ import _ from "lodash";
 export const appSlice = createSlice({
   name: "app",
   initialState: {
-    lang: "en",
+    lang: "fa",
     themeMood: "dark",
     plans: [],
     routines: [],
