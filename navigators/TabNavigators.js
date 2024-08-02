@@ -5,7 +5,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
-import { updatePlans, updateRoutines } from "../store";
+import {
+  changeLang,
+  changeThemeMood,
+  updatePlans,
+  updateRoutines,
+} from "../store";
 import ShowCalendar from "./tabs/ShowCalendar";
 
 const MusicRoute = ({ i18n }) => (
@@ -37,8 +42,20 @@ const TabNavigators = ({ i18n }) => {
     }
   };
 
+  const getThemeAndLang = async () => {
+    const existingTheme = await AsyncStorage.getItem("theme");
+    const existingLang = await AsyncStorage.getItem("lang");
+    if (existingTheme) {
+      dispatch(changeThemeMood(existingTheme));
+    }
+    if (existingLang) {
+      dispatch(changeLang(existingLang));
+    }
+  };
+
   useEffect(() => {
     getPlans();
+    getThemeAndLang();
   }, []);
 
   return (

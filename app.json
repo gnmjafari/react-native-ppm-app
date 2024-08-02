@@ -28,6 +28,9 @@
       "eas": {
         "projectId": "1f9d9c78-dee5-4465-98d1-326eee61c4d9"
       }
+    },
+    "locales": {
+      "fa": "./lang/fa.json"
     }
   }
 }
