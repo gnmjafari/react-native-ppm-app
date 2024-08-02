@@ -12,22 +12,29 @@ import {
   updateRoutines,
 } from "../store";
 import ShowCalendar from "./tabs/ShowCalendar";
-
-const MusicRoute = ({ i18n }) => (
-  <Text style={{ fontFamily: "SpaceMono", fontSize: 40 }}>
-    {i18n.t("tasks")}
-  </Text>
-);
+import TestComponent from "./tabs/TestComponent";
 
 const TabNavigators = ({ i18n }) => {
   const dispatch = useDispatch();
   const { lang } = useSelector((state) => state.app);
   const [index, setIndex] = useState(0);
 
+  const MusicRoute = ({ i18n }) => (
+    <Text
+      style={{
+        fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+        fontSize: 40,
+      }}
+    >
+      {i18n.t("tasks")}
+    </Text>
+  );
+
   const renderScene = BottomNavigation.SceneMap({
     music: () => MusicRoute({ i18n }),
     dashboard: () => Dashboard({ i18n }),
     ShowCalendar: () => ShowCalendar({ i18n }),
+    TestComponent: () => TestComponent({ i18n }),
   });
 
   const getPlans = async () => {
@@ -89,6 +96,12 @@ const TabNavigators = ({ i18n }) => {
             unfocusedIcon: ({ color, size }) => (
               <AntDesign name="calendar" size={size} color={color} />
             ),
+          },
+          {
+            key: "TestComponent",
+            title: "TestComponent",
+            focusedIcon: "heart",
+            unfocusedIcon: "heart-outline",
           },
         ],
       }}
