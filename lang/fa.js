@@ -32,4 +32,7 @@ export const fa = {
   submit: "ثبت",
   Dont_you_have_plan_for_today: "برنامه ای برای امروزت نداری؟",
   Dont_you_have_routine_for_today: "روتین ای برای امروزت نداری؟",
+  calendar: "تقویم",
+  plan: "برنامه",
+  plans: "برنامه ها",
 };

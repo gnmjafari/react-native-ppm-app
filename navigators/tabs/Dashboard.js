@@ -30,14 +30,17 @@ import {
   deleteRoutine,
 } from "../../store";
 import AddTaskAndRoutine from "../../component/AddTaskAndRoutine";
+import {
+  changeChecked,
+  createChartData,
+  deleteTaskAndRoutine,
+} from "../../utils/Utils";
 
 const Dashboard = ({ i18n }) => {
   const dispatch = useDispatch();
   const { themeMood, lang, routines, plans } = useSelector(
     (state) => state.app
   );
-
-  console.log("plans", plans);
 
   moment.locale(lang);
   if (lang == "fa") {
@@ -106,46 +109,6 @@ const Dashboard = ({ i18n }) => {
     },
   });
 
-  const checked = async ({ type, id }) => {
-    let existingArray = [];
-    if (type == "plans") {
-      const existingData = await AsyncStorage.getItem(type);
-      if (existingData) {
-        existingArray = JSON.parse(existingData);
-      }
-    } else {
-      const existingData = await AsyncStorage.getItem(type);
-      if (existingData) {
-        existingArray = JSON.parse(existingData);
-      }
-    }
-    const newArray = _.map(existingArray, (item) =>
-      item.id == id ? { ...item, checked: !item.checked } : item
-    );
-
-    dispatch(checkedPlanOrRoutine({ type, data: newArray }));
-    await AsyncStorage.setItem(type, JSON.stringify(newArray));
-  };
-
-  const deleteTaskAndRoutine = async ({ type, id }) => {
-    let existingArray = [];
-    if (type == "plans") {
-      const existingData = await AsyncStorage.getItem(type);
-      if (existingData) {
-        existingArray = JSON.parse(existingData);
-      }
-      dispatch(deletePlan(id));
-    } else if (type == "routines") {
-      const existingData = await AsyncStorage.getItem(type);
-      if (existingData) {
-        existingArray = JSON.parse(existingData);
-      }
-      dispatch(deleteRoutine(id));
-    }
-    const newArray = _.filter(existingArray, (item) => item.id != id && item);
-    await AsyncStorage.setItem(type, JSON.stringify(newArray));
-  };
-
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => {
     setEditData();
@@ -170,46 +133,8 @@ const Dashboard = ({ i18n }) => {
     handleOpenAddModal();
   };
 
-  const createChartData = (task, routine) => {
-    let labels = [];
-    let colors = [];
-    let data = [];
-
-    if (!_.isEmpty(routine)) {
-      const totalItems = routine.length;
-      const checkedItems = _.filter(routine, { checked: true }).length;
-
-      const percentage = checkedItems / totalItems;
-
-      labels.push(i18n.t("routines"));
-      colors.push(theme.colors.tertiary);
-      data.push(Number(percentage));
-    } else {
-      labels.push(i18n.t("routines"));
-      colors.push(theme.colors.tertiary);
-      data.push(0);
-    }
-
-    if (!_.isEmpty(task)) {
-      const totalItems = task.length;
-      const checkedItems = _.filter(task, { checked: true }).length;
-
-      const percentage = checkedItems / totalItems;
-
-      labels.push(i18n.t("tasks"));
-      colors.push(theme.colors.primary);
-      data.push(Number(percentage));
-    } else {
-      labels.push(i18n.t("tasks"));
-      colors.push(theme.colors.primary);
-      data.push(0);
-    }
-
-    return setChartData({ labels, colors, data });
-  };
-
   useEffect(() => {
-    createChartData(tasksToday, routinesToday);
+    createChartData(tasksToday, routinesToday, i18n, theme,setChartData);
   }, [tasksToday, routinesToday]);
 
   return (
@@ -504,7 +429,11 @@ const Dashboard = ({ i18n }) => {
                             <CheckboxInput
                               status={item.checked}
                               onPressCustom={() => {
-                                checked({ type: "routines", id: item.id });
+                                changeChecked({
+                                  type: "routines",
+                                  id: item.id,
+                                  dispatch,
+                                });
                               }}
                             />
                           )}
@@ -532,6 +461,7 @@ const Dashboard = ({ i18n }) => {
                                   deleteTaskAndRoutine({
                                     type: "routines",
                                     id: item.id,
+                                    dispatch,
                                   });
                                 }}
                               />
@@ -556,84 +486,89 @@ const Dashboard = ({ i18n }) => {
               </List.Accordion>
             </Card>
           )}
-          {/* {tasksToday.length > 0 && ( */}
-          <Card style={{ marginHorizontal: 10, marginVertical: 20 }}>
-            <List.Accordion
-              titleStyle={{
-                fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-              }}
-              title={i18n.t("tasks")}
-              left={(props) => (
-                <List.Icon
-                  {...props}
-                  icon={({ size, color }) => (
-                    <FontAwesome5 name="tasks" size={size} color={color} />
-                  )}
-                />
-              )}
-            >
-              {_.map(tasksToday, (item, index) => {
-                return (
-                  <List.Item
-                    left={(props) => (
-                      <List.Icon
-                        {...props}
-                        icon={({ size, color }) => (
-                          <CheckboxInput
-                            status={item.checked}
-                            onPressCustom={() => {
-                              checked({ type: "plans", id: item.id });
-                            }}
-                          />
-                        )}
-                      />
+          {tasksToday.length > 0 && (
+            <Card style={{ marginHorizontal: 10, marginVertical: 20 }}>
+              <List.Accordion
+                titleStyle={{
+                  fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                }}
+                title={i18n.t("tasks")}
+                left={(props) => (
+                  <List.Icon
+                    {...props}
+                    icon={({ size, color }) => (
+                      <FontAwesome5 name="tasks" size={size} color={color} />
                     )}
-                    right={(props) => (
-                      <List.Icon
-                        {...props}
-                        icon={({ size, color }) => (
-                          <View
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
-                              gap: 10,
-                            }}
-                          >
-                            <AntDesign
-                              name="delete"
-                              size={size}
-                              color={color}
-                              onPress={() => {
-                                deleteTaskAndRoutine({
-                                  type: "plans",
-                                  id: item.id,
-                                });
-                              }}
-                            />
-                            <AntDesign
-                              name="edit"
-                              size={size}
-                              color={color}
-                              onPress={() => {
-                                editTaskAndRoutine({
-                                  type: "plans",
-                                  id: item.id,
-                                });
-                              }}
-                            />
-                          </View>
-                        )}
-                      />
-                    )}
-                    key={index}
-                    title={item.title}
                   />
-                );
-              })}
-            </List.Accordion>
-          </Card>
-          {/* )} */}
+                )}
+              >
+                {_.map(tasksToday, (item, index) => {
+                  return (
+                    <List.Item
+                      left={(props) => (
+                        <List.Icon
+                          {...props}
+                          icon={({ size, color }) => (
+                            <CheckboxInput
+                              status={item.checked}
+                              onPressCustom={() => {
+                                changeChecked({
+                                  type: "plans",
+                                  id: item.id,
+                                  dispatch,
+                                });
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+                      right={(props) => (
+                        <List.Icon
+                          {...props}
+                          icon={({ size, color }) => (
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                gap: 10,
+                              }}
+                            >
+                              <AntDesign
+                                name="delete"
+                                size={size}
+                                color={color}
+                                onPress={() => {
+                                  deleteTaskAndRoutine({
+                                    type: "plans",
+                                    id: item.id,
+                                    dispatch,
+                                  });
+                                }}
+                              />
+                              <AntDesign
+                                name="edit"
+                                size={size}
+                                color={color}
+                                onPress={() => {
+                                  editTaskAndRoutine({
+                                    type: "plans",
+                                    id: item.id,
+                                  });
+                                }}
+                              />
+                            </View>
+                          )}
+                        />
+                      )}
+                      key={index}
+                      title={item.title}
+                    />
+                  );
+                })}
+              </List.Accordion>
+            </Card>
+          )}
         </List.Section>
       </View>
     </ScrollView>

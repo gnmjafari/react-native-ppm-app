@@ -30,4 +30,7 @@ export const en = {
   submit: "Submit",
   Dont_you_have_plan_for_today: "Don,t you have a plan for today?",
   Dont_you_have_routine_for_today: "Don,t you have a routine for today?",
+  calendar: "Calendar",
+  plan: "Plan",
+  plans: "Plans",
 };
