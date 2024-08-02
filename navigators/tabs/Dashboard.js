@@ -268,11 +268,11 @@ const Dashboard = ({ i18n }) => {
                 style={{ width: 50 }}
                 value={lang == "en"}
                 onValueChange={async () => {
-                  dispatch(changeLang(lang == "en" ? "fa" : "fa"));
+                  dispatch(changeLang(lang == "en" ? "fa" : "en"));
 
                   await AsyncStorage.setItem(
                     "lang",
-                    lang == "en" ? "fa" : "fa"
+                    lang == "en" ? "fa" : "en"
                   );
                 }}
               />
