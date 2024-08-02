@@ -4,7 +4,7 @@ import Dashboard from "./tabs/Dashboard";
 import { MaterialIcons } from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   changeLang,
   changeThemeMood,
@@ -21,6 +21,7 @@ const MusicRoute = ({ i18n }) => (
 
 const TabNavigators = ({ i18n }) => {
   const dispatch = useDispatch();
+  const { lang } = useSelector((state) => state.app);
   const [index, setIndex] = useState(0);
 
   const renderScene = BottomNavigation.SceneMap({
@@ -93,6 +94,21 @@ const TabNavigators = ({ i18n }) => {
       }}
       onIndexChange={setIndex}
       renderScene={renderScene}
+      sceneAnimationEnabled
+      sceneAnimationType="shifting"
+      getLabelText={(prop) => {
+        const title = prop.route.title;
+
+        return (
+          <Text
+            style={{
+              fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+            }}
+          >
+            {title}
+          </Text>
+        );
+      }}
     />
   );
 };
