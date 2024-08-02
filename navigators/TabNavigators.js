@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { BottomNavigation, Text } from "react-native-paper";
 import Dashboard from "./tabs/Dashboard";
 import { MaterialIcons } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import { updatePlans, updateRoutines } from "../store";
-import { View } from "react-native";
+import ShowCalendar from "./tabs/ShowCalendar";
 
 const MusicRoute = ({ i18n }) => (
   <Text style={{ fontFamily: "SpaceMono", fontSize: 40 }}>
@@ -20,6 +21,7 @@ const TabNavigators = ({ i18n }) => {
   const renderScene = BottomNavigation.SceneMap({
     music: () => MusicRoute({ i18n }),
     dashboard: () => Dashboard({ i18n }),
+    ShowCalendar: () => ShowCalendar({ i18n }),
   });
 
   const getPlans = async () => {
@@ -58,6 +60,16 @@ const TabNavigators = ({ i18n }) => {
             ),
             unfocusedIcon: ({ color, size }) => (
               <MaterialIcons name="dashboard" size={size} color={color} />
+            ),
+          },
+          {
+            key: "ShowCalendar",
+            title: i18n.t("calendar"),
+            focusedIcon: ({ color, size }) => (
+              <AntDesign name="calendar" size={size} color={color} />
+            ),
+            unfocusedIcon: ({ color, size }) => (
+              <AntDesign name="calendar" size={size} color={color} />
             ),
           },
         ],
