@@ -127,13 +127,13 @@ const Dashboard = ({ i18n }) => {
     handleOpenAddModal();
   };
 
-  // useEffect(() => {
-  //   createChartData(tasksToday, routinesToday, i18n, theme, setChartData);
-  // }, [tasksToday, routinesToday]);
+  useEffect(() => {
+    createChartData(tasksToday, routinesToday, i18n, theme, setChartData);
+  }, [tasksToday, routinesToday]);
 
   return (
     <ScrollView style={styles.scrollView}>
-      {/* <Appbar.Header
+      <Appbar.Header
         style={{
           marginTop: 20,
           paddingLeft: 10,
@@ -286,7 +286,7 @@ const Dashboard = ({ i18n }) => {
             </View>
           </Menu>
         </View>
-      </Appbar.Header> */}
+      </Appbar.Header>
 
       <View
         style={{
@@ -409,7 +409,7 @@ const Dashboard = ({ i18n }) => {
           />
         )}
 
-        {/* <DashboardChart lang={lang} theme={theme} data={chartData} /> */}
+        <DashboardChart lang={lang} theme={theme} data={chartData} />
 
         <List.Section style={{ width: "100%" }}>
           {routinesToday.length > 0 && (
