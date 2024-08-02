@@ -214,7 +214,7 @@ const Dashboard = ({ i18n }) => {
 
   return (
     <ScrollView style={styles.scrollView}>
-      {/* <Appbar.Header
+      <Appbar.Header
         style={{
           marginTop: 20,
           paddingLeft: 10,
@@ -352,7 +352,7 @@ const Dashboard = ({ i18n }) => {
             </View>
           </Menu>
         </View>
-      </Appbar.Header> */}
+      </Appbar.Header>
 
       <View
         style={{
