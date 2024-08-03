@@ -391,7 +391,7 @@ const Dashboard = ({ i18n }) => {
           justifyContent: "center",
         }}
       >
-        {/* <Text
+        <Text
           style={{
             fontSize: 20,
             fontWeight: "bold",
@@ -399,7 +399,7 @@ const Dashboard = ({ i18n }) => {
           }}
         >
           {moment().format(lang == "fa" ? "jYYYY" : "YYYY")}
-        </Text> */}
+        </Text>
         <Text
           style={{
             fontSize: 20,
@@ -413,7 +413,7 @@ const Dashboard = ({ i18n }) => {
             ]
           }
         </Text>
-        {/* <Text
+        <Text
           style={{
             fontSize: 60,
             fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
@@ -421,7 +421,7 @@ const Dashboard = ({ i18n }) => {
           }}
         >
           {moment().format(lang == "fa" ? "jD" : "D")}
-        </Text> */}
+        </Text>
       </View>
 
       {!routinesToday.length && (
