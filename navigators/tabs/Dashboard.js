@@ -29,6 +29,7 @@ import {
   createChartData,
   deleteTaskAndRoutine,
 } from "../../utils/Utils";
+import fa from "moment/src/locale/fa";
 
 const useLocales = {
   fa: {
@@ -128,7 +129,12 @@ const Dashboard = ({ i18n }) => {
     (state) => state.app
   );
 
-  moment.locale(lang);
+  useEffect(() => {
+    moment.locale(lang, fa);
+    if (lang == "fa") {
+      moment.loadPersian({ dialect: "persian-modern" });
+    }
+  }, [lang]);
 
   const [openAddModal, setOpenAddModal] = useState(false);
   const [routinesToday, setRoutinesToday] = useState([]);
@@ -385,7 +391,7 @@ const Dashboard = ({ i18n }) => {
           justifyContent: "center",
         }}
       >
-        <Text
+        {/* <Text
           style={{
             fontSize: 20,
             fontWeight: "bold",
@@ -393,7 +399,7 @@ const Dashboard = ({ i18n }) => {
           }}
         >
           {moment().format(lang == "fa" ? "jYYYY" : "YYYY")}
-        </Text>
+        </Text> */}
         <Text
           style={{
             fontSize: 20,
@@ -407,7 +413,7 @@ const Dashboard = ({ i18n }) => {
             ]
           }
         </Text>
-        <Text
+        {/* <Text
           style={{
             fontSize: 60,
             fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
@@ -415,7 +421,7 @@ const Dashboard = ({ i18n }) => {
           }}
         >
           {moment().format(lang == "fa" ? "jD" : "D")}
-        </Text>
+        </Text> */}
       </View>
 
       {!routinesToday.length && (
