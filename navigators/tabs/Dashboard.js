@@ -131,11 +131,19 @@ const Dashboard = ({ i18n }) => {
 
   useEffect(() => {
     if (lang == "fa") {
-      moment.locale(lang, fa);
+      if (_.includes(moment.locales(), "fa")) {
+        moment.updateLocale(lang, fa);
+      } else {
+        moment.locale(lang, fa);
+      }
 
       moment.loadPersian({ dialect: "persian-modern" });
-    } else {
-      moment.locale(lang);
+    } else if (lang == "en") {
+      if (_.includes(moment.locales(), "en")) {
+        moment.updateLocale(lang);
+      } else {
+        moment.locale(lang);
+      }
     }
   }, [lang]);
 
