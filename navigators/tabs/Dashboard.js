@@ -29,6 +29,7 @@ import {
   createChartData,
   deleteTaskAndRoutine,
 } from "../../utils/Utils";
+import fa from "moment/src/locale/fa";
 
 const Dashboard = ({ i18n }) => {
   const dispatch = useDispatch();
@@ -36,10 +37,20 @@ const Dashboard = ({ i18n }) => {
     (state) => state.app
   );
 
-  // moment.locale(lang);
-  // if (lang == "fa") {
-  //   moment.loadPersian({ dialect: "persian-modern" });
-  // }
+  useEffect(() => {
+    // Update the locale instead of defining it
+    if (lang == "fa") {
+      moment.updateLocale("fa", fa); // Make sure to updateLocale instead
+      moment.loadPersian({ dialect: "persian-modern" });
+    } else if (lang == "en") {
+      moment.locale("en"); // Use this for default locales, like 'en'
+    }
+  }, [lang]);
+
+  // moment.locale(lang, fa);
+  // // if (lang == "fa") {
+  // //   moment.loadPersian({ dialect: "persian-modern" });
+  // // }
 
   const [openAddModal, setOpenAddModal] = useState(false);
   const [routinesToday, setRoutinesToday] = useState([]);
