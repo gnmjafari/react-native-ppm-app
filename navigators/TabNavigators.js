@@ -14,12 +14,15 @@ import {
 import ShowCalendar from "./tabs/ShowCalendar";
 import moment from "moment-jalaali";
 import fa from "moment/src/locale/fa";
+import Loading from "../component/Loading";
 
 const TabNavigators = ({ i18n }) => {
   const dispatch = useDispatch();
-  const { lang } = useSelector((state) => state.app);
+  const { lang, isLoadingLang } = useSelector((state) => state.app);
   const [index, setIndex] = useState(0);
-  moment.locale("fa", fa);
+
+  moment.locale("fa");
+  moment.locale("en");
 
   useEffect(() => {
     if (lang == "fa") {
@@ -76,7 +79,7 @@ const TabNavigators = ({ i18n }) => {
     getThemeAndLang();
   }, []);
 
-  return (
+  return !isLoadingLang ? (
     <BottomNavigation
       navigationState={{
         index,
@@ -127,6 +130,8 @@ const TabNavigators = ({ i18n }) => {
         );
       }}
     />
+  ) : (
+    <Loading />
   );
 };
 
