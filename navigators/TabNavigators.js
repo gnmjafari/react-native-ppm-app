@@ -12,11 +12,23 @@ import {
   updateRoutines,
 } from "../store";
 import ShowCalendar from "./tabs/ShowCalendar";
+import moment from "moment-jalaali";
+import fa from "moment/src/locale/fa";
 
 const TabNavigators = ({ i18n }) => {
   const dispatch = useDispatch();
   const { lang } = useSelector((state) => state.app);
   const [index, setIndex] = useState(0);
+
+  console.log("moment.locales", moment.locales());
+  useEffect(() => {
+    if (lang == "fa") {
+      moment.updateLocale(lang, fa);
+      moment.loadPersian({ dialect: "persian-modern" });
+    } else {
+      moment.locale(lang);
+    }
+  }, [lang]);
 
   const MusicRoute = ({ i18n }) => (
     <Text
@@ -30,7 +42,7 @@ const TabNavigators = ({ i18n }) => {
   );
 
   const renderScene = BottomNavigation.SceneMap({
-    music: () => MusicRoute({ i18n }),
+    // music: () => MusicRoute({ i18n }),
     dashboard: () => Dashboard({ i18n }),
     ShowCalendar: () => ShowCalendar({ i18n }),
   });
@@ -69,12 +81,12 @@ const TabNavigators = ({ i18n }) => {
       navigationState={{
         index,
         routes: [
-          {
-            key: "music",
-            title: i18n.t("tasks"),
-            focusedIcon: "heart",
-            unfocusedIcon: "heart-outline",
-          },
+          // {
+          //   key: "music",
+          //   title: i18n.t("tasks"),
+          //   focusedIcon: "heart",
+          //   unfocusedIcon: "heart-outline",
+          // },
           {
             key: "dashboard",
             title: i18n.t("dashboard"),
