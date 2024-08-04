@@ -65,7 +65,7 @@ export const appSlice = createSlice({
       const { payload } = action;
       if (payload.type == "plans") {
         state.plans = payload.data;
-      } else if (payload.type == "routine") {
+      } else if (payload.type == "routines") {
         state.routines = payload.data;
       }
     },

@@ -18,13 +18,13 @@ import { useDispatch } from "react-redux";
 import { addPlan, addRoutine } from "../store";
 
 const days = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
 ];
 
 const AddTaskAndRoutine = ({

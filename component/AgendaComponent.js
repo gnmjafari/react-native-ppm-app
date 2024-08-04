@@ -70,12 +70,20 @@ const AgendaComponent = ({ i18n }) => {
     );
   };
 
+  const routinesMemo = React.useMemo(() => {
+    return routines || [];
+  }, [routines]);
+
+  const tasksMemo = React.useMemo(() => {
+    return plans || [];
+  }, [plans]);
+
   return (
     <SafeAreaProvider>
       <Agenda
         lang={lang}
         themeMode={themeMood}
-        events={_.concat(routines || [], plans || [])}
+        events={_.concat(routinesMemo, tasksMemo)}
         fontFamily={lang == "fa" ? "IRANSans" : "SpaceMono"}
         renderItemCustom={renderItemCustom}
         theme={{
