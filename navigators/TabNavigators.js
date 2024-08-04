@@ -19,14 +19,14 @@ const TabNavigators = ({ i18n }) => {
   const dispatch = useDispatch();
   const { lang } = useSelector((state) => state.app);
   const [index, setIndex] = useState(0);
+  moment.locale("fa", fa);
 
-  console.log("moment.locales", moment.locales());
   useEffect(() => {
     if (lang == "fa") {
       moment.updateLocale(lang, fa);
       moment.loadPersian({ dialect: "persian-modern" });
     } else {
-      moment.locale(lang);
+      moment.updateLocale(lang);
     }
   }, [lang]);
 
