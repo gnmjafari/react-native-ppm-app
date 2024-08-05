@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FlatList, ScrollView, View } from "react-native";
+import { FlatList, View } from "react-native";
 import {
   Button,
   Checkbox,
