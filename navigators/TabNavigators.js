@@ -19,9 +19,16 @@ import Loading from "../component/Loading";
 const TabNavigators = ({ i18n }) => {
   const dispatch = useDispatch();
   const lang = useSelector((state) => state.app.lang);
+  const isLoadingLang = useSelector((state) => state.app.isLoadingLang);
   const [index, setIndex] = useState(0);
 
-  const checkLang = React.useMemo(() => {
+  const checkLang = React.useMemo(async () => {
+    const existingTheme = await AsyncStorage.getItem("theme");
+    const existingLang = await AsyncStorage.getItem("lang");
+
+    dispatch(changeThemeMood(existingTheme || "dark"));
+    dispatch(changeLang(existingLang || lang));
+
     if (lang == "fa") {
       moment.locale(lang, fa);
       moment.loadPersian({ dialect: "persian-modern" });
@@ -50,23 +57,11 @@ const TabNavigators = ({ i18n }) => {
     }
   };
 
-  const getThemeAndLang = async () => {
-    const existingTheme = await AsyncStorage.getItem("theme");
-    const existingLang = await AsyncStorage.getItem("lang");
-    if (existingTheme) {
-      dispatch(changeThemeMood(existingTheme));
-    }
-    if (existingLang) {
-      dispatch(changeLang(existingLang));
-    }
-  };
-
   useEffect(() => {
     getPlans();
-    getThemeAndLang();
   }, []);
 
-  return checkLang ? (
+  return !isLoadingLang && checkLang ? (
     <BottomNavigation
       navigationState={{
         index,
