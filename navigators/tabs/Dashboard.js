@@ -10,13 +10,7 @@ import {
   Switch,
 } from "react-native-paper";
 import { useTheme, Text } from "react-native-paper";
-import {
-  FontAwesome5,
-  FontAwesome,
-  AntDesign,
-  Fontisto,
-} from "@expo/vector-icons";
-import CheckboxInput from "../../component/Inputs/CheckboxInput";
+import { FontAwesome5, FontAwesome, Fontisto } from "@expo/vector-icons";
 import moment from "moment-jalaali";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import _ from "lodash";
@@ -29,6 +23,7 @@ import {
   createChartData,
   deleteTaskAndRoutine,
 } from "../../utils/Utils";
+import ItemList from "../../component/ItemList";
 
 const useLocales = {
   fa: {
@@ -125,13 +120,21 @@ const useLocales = {
 const Dashboard = ({ i18n }) => {
   const dispatch = useDispatch();
 
-  const { themeMood, lang, routines, plans } = useSelector(
-    (state) => state.app
-  );
+  const { themeMood, lang } = useSelector((state) => state.app);
+  const routines = useSelector((state) => state.app.routines);
+  const plans = useSelector((state) => state.app.plans);
 
   const [openAddModal, setOpenAddModal] = useState(false);
   const [editData, setEditData] = useState();
   const [visible, setVisible] = useState(false);
+  const [expandedPlans, setExpandedPlans] = useState(false);
+  const [expandedRoutines, setExpandedPlansRoutines] = useState(false);
+
+  const handlePressPlans = () => {
+    console.log("expandedPlans", expandedPlans);
+    setExpandedPlans(!expandedPlans);
+  };
+  const handlePressRoutines = () => setExpandedPlansRoutines(!expandedRoutines);
 
   const openMenu = () => setVisible(true);
 
@@ -501,6 +504,8 @@ const Dashboard = ({ i18n }) => {
           {routinesToday.length > 0 && (
             <Card style={{ marginHorizontal: 10, marginVertical: 20 }}>
               <List.Accordion
+                expanded={expandedRoutines}
+                onPress={handlePressRoutines}
                 titleStyle={{
                   fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
                 }}
@@ -515,66 +520,31 @@ const Dashboard = ({ i18n }) => {
                 )}
               >
                 {_.map(routinesToday, (item, index) => {
+                  const onChecked = () =>
+                    changeChecked({
+                      type: "routines",
+                      id: item.id,
+                      dispatch,
+                    });
+                  const onDelete = () =>
+                    deleteTaskAndRoutine({
+                      type: "routines",
+                      id: item.id,
+                      dispatch,
+                    });
+                  const onEdit = () =>
+                    editTaskAndRoutine({
+                      type: "routines",
+                      id: item.id,
+                    });
                   return (
-                    <List.Item
-                      left={(props) => (
-                        <List.Icon
-                          {...props}
-                          icon={({ size, color }) => (
-                            <CheckboxInput
-                              status={item.checked}
-                              onPressCustom={() => {
-                                changeChecked({
-                                  type: "routines",
-                                  id: item.id,
-                                  dispatch,
-                                });
-                              }}
-                            />
-                          )}
-                        />
-                      )}
-                      key={index}
-                      title={item.title}
-                      right={(props) => (
-                        <List.Icon
-                          {...props}
-                          icon={({ size, color }) => (
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                gap: 10,
-                              }}
-                            >
-                              <AntDesign
-                                name="delete"
-                                size={size}
-                                color={color}
-                                onPress={() => {
-                                  deleteTaskAndRoutine({
-                                    type: "routines",
-                                    id: item.id,
-                                    dispatch,
-                                  });
-                                }}
-                              />
-                              <AntDesign
-                                name="edit"
-                                size={size}
-                                color={color}
-                                onPress={() => {
-                                  editTaskAndRoutine({
-                                    type: "routines",
-                                    id: item.id,
-                                  });
-                                }}
-                              />
-                            </View>
-                          )}
-                        />
-                      )}
+                    <ItemList
+                      key={item.id}
+                      index={index}
+                      item={item}
+                      onEdit={() => onEdit()}
+                      onDelete={() => onDelete()}
+                      onChecked={() => onChecked()}
                     />
                   );
                 })}
@@ -584,6 +554,8 @@ const Dashboard = ({ i18n }) => {
           {tasksToday.length > 0 && (
             <Card style={{ marginHorizontal: 10, marginVertical: 20 }}>
               <List.Accordion
+                expanded={expandedPlans}
+                onPress={handlePressPlans}
                 titleStyle={{
                   fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
                 }}
@@ -598,66 +570,31 @@ const Dashboard = ({ i18n }) => {
                 )}
               >
                 {_.map(tasksToday, (item, index) => {
+                  const onChecked = () =>
+                    changeChecked({
+                      type: "plans",
+                      id: item.id,
+                      dispatch,
+                    });
+                  const onDelete = () =>
+                    deleteTaskAndRoutine({
+                      type: "plans",
+                      id: item.id,
+                      dispatch,
+                    });
+                  const onEdit = () =>
+                    editTaskAndRoutine({
+                      type: "plans",
+                      id: item.id,
+                    });
                   return (
-                    <List.Item
-                      left={(props) => (
-                        <List.Icon
-                          {...props}
-                          icon={({ size, color }) => (
-                            <CheckboxInput
-                              status={item.checked}
-                              onPressCustom={() => {
-                                changeChecked({
-                                  type: "plans",
-                                  id: item.id,
-                                  dispatch,
-                                });
-                              }}
-                            />
-                          )}
-                        />
-                      )}
-                      right={(props) => (
-                        <List.Icon
-                          {...props}
-                          icon={({ size, color }) => (
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                gap: 10,
-                              }}
-                            >
-                              <AntDesign
-                                name="delete"
-                                size={size}
-                                color={color}
-                                onPress={() => {
-                                  deleteTaskAndRoutine({
-                                    type: "plans",
-                                    id: item.id,
-                                    dispatch,
-                                  });
-                                }}
-                              />
-                              <AntDesign
-                                name="edit"
-                                size={size}
-                                color={color}
-                                onPress={() => {
-                                  editTaskAndRoutine({
-                                    type: "plans",
-                                    id: item.id,
-                                  });
-                                }}
-                              />
-                            </View>
-                          )}
-                        />
-                      )}
-                      key={index}
-                      title={item.title}
+                    <ItemList
+                      key={item.id}
+                      index={index}
+                      item={item}
+                      onEdit={() => onEdit()}
+                      onDelete={() => onDelete()}
+                      onChecked={() => onChecked()}
                     />
                   );
                 })}

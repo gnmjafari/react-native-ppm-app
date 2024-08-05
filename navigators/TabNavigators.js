@@ -18,7 +18,7 @@ import Loading from "../component/Loading";
 
 const TabNavigators = ({ i18n }) => {
   const dispatch = useDispatch();
-  const { lang, isLoadingLang } = useSelector((state) => state.app);
+  const lang = useSelector((state) => state.app.lang);
   const [index, setIndex] = useState(0);
 
   const checkLang = React.useMemo(() => {
@@ -32,19 +32,7 @@ const TabNavigators = ({ i18n }) => {
     return true;
   }, [lang]);
 
-  const MusicRoute = ({ i18n }) => (
-    <Text
-      style={{
-        fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-        fontSize: 40,
-      }}
-    >
-      {i18n.t("tasks")}
-    </Text>
-  );
-
   const renderScene = BottomNavigation.SceneMap({
-    // music: () => MusicRoute({ i18n }),
     dashboard: () => Dashboard({ i18n }),
     ShowCalendar: () => ShowCalendar({ i18n }),
   });
@@ -52,7 +40,6 @@ const TabNavigators = ({ i18n }) => {
   const getPlans = async () => {
     const existingPlans = await AsyncStorage.getItem("plans");
     const existingRoutines = await AsyncStorage.getItem("routines");
-    await AsyncStorage.clear();
     if (existingPlans) {
       const existingArrayPlans = JSON.parse(existingPlans);
       dispatch(updatePlans(existingArrayPlans));

@@ -1,14 +1,16 @@
 import React from "react";
 import TabNavigators from "../navigators/TabNavigators";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useMaterial3Theme } from "@pchmn/expo-material3-theme/build";
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
-import { fa } from "../lang/fa";
 import { I18n } from "i18n-js";
 
 const Index = () => {
   const { theme } = useMaterial3Theme();
-  const { themeMood, lang } = useSelector((state) => state.app);
+  const lang = useSelector((state) => state.app.lang);
+
+  const themeMood = useSelector((state) => state.app.themeMood);
+  console.log("langIndex", lang);
 
   const translations = {
     en: require("../lang/en.json"),

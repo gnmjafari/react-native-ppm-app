@@ -15,6 +15,8 @@ const AgendaComponent = ({ i18n }) => {
     (state) => state.app
   );
 
+  console.log("routines", routines);
+
   const renderItemCustom = ({ item, index }) => {
     return (
       <View
