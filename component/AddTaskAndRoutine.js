@@ -9,6 +9,7 @@ import {
   RadioButton,
   Text,
   TextInput,
+  useTheme,
 } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash";
@@ -18,13 +19,13 @@ import { useDispatch } from "react-redux";
 import { addPlan, addRoutine } from "../store";
 
 const days = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
 ];
 
 const AddTaskAndRoutine = ({
@@ -37,6 +38,7 @@ const AddTaskAndRoutine = ({
   editData,
   setEditData,
 }) => {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const [addType, setAddType] = useState(editData?.type || "plans");
 
@@ -116,6 +118,41 @@ const AddTaskAndRoutine = ({
     } catch (error) {
       console.error("Error storing/retrieving data:", error);
     }
+  };
+
+  const themeCalendar = {
+    dark: {
+      background: theme.colors.background,
+      onBackground: theme.colors.onBackground,
+      // itemBgColor: theme.colors.primary,
+      // itemTextColor: theme.colors.onPrimary,
+      // dayTextColor: theme.colors.onBackground,
+      // buttonBgColor: theme.colors.primaryContainer,
+      // buttonTextColor: theme.colors.onPrimaryContainer,
+      // todayTextColor: theme.colors.primary,
+      // line: theme.colors.outline,
+      disable: theme.colors.outline,
+      selectedDateBgColor: theme.colors.primary,
+      selectedDateColor: theme.colors.onPrimary,
+      todayBgColor: theme.colors.primaryContainer,
+      todayColor: theme.colors.onPrimaryContainer,
+    },
+    light: {
+      background: theme.colors.background,
+      onBackground: theme.colors.onBackground,
+      // itemBgColor: theme.colors.primary,
+      // itemTextColor: theme.colors.onPrimary,
+      // dayTextColor: theme.colors.onBackground,
+      // buttonBgColor: theme.colors.primaryContainer,
+      // buttonTextColor: theme.colors.onPrimaryContainer,
+      // todayTextColor: theme.colors.primary,
+      // line: theme.colors.outline,
+      disable: theme.colors.outline,
+      selectedDateBgColor: theme.colors.primary,
+      selectedDateColor: theme.colors.onPrimary,
+      todayBgColor: theme.colors.primaryContainer,
+      todayColor: theme.colors.onPrimaryContainer,
+    },
   };
 
   return (
@@ -247,6 +284,7 @@ const AddTaskAndRoutine = ({
                     value={value}
                     title={i18n.t("date")}
                     lang={lang}
+                    theme={themeCalendar}
                   />
                 )}
                 name="date"
@@ -280,6 +318,7 @@ const AddTaskAndRoutine = ({
                       value={value}
                       title={i18n.t("start_routine")}
                       i18n={lang}
+                      theme={themeCalendar}
                     />
                   )}
                   name="start_routine"
@@ -310,6 +349,7 @@ const AddTaskAndRoutine = ({
                       value={value}
                       title={i18n.t("end_routine")}
                       lang={lang}
+                      theme={themeCalendar}
                     />
                   )}
                   name="end_routine"

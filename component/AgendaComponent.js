@@ -70,14 +70,56 @@ const AgendaComponent = ({ i18n }) => {
     );
   };
 
+  const routinesMemo = React.useMemo(() => {
+    return routines || [];
+  }, [routines]);
+
+  const tasksMemo = React.useMemo(() => {
+    return plans || [];
+  }, [plans]);
+
   return (
     <SafeAreaProvider>
       <Agenda
         lang={lang}
         themeMode={themeMood}
-        events={_.concat(routines || [], plans || [])}
+        events={_.concat(routinesMemo, tasksMemo)}
         fontFamily={lang == "fa" ? "IRANSans" : "SpaceMono"}
         renderItemCustom={renderItemCustom}
+        theme={{
+          dark: {
+            background: theme.colors.background,
+            onBackground: theme.colors.onBackground,
+            itemBgColor: theme.colors.primary,
+            itemTextColor: theme.colors.onPrimary,
+            dayTextColor: theme.colors.onBackground,
+            buttonBgColor: theme.colors.primaryContainer,
+            buttonTextColor: theme.colors.onPrimaryContainer,
+            todayTextColor: theme.colors.primary,
+            line: theme.colors.outline,
+            disable: theme.colors.outline,
+            selectedDateBgColor: theme.colors.primary,
+            selectedDateColor: theme.colors.onPrimary,
+            todayBgColor: theme.colors.primaryContainer,
+            todayColor: theme.colors.onPrimaryContainer || "rgb(54, 44, 63)",
+          },
+          light: {
+            background: theme.colors.background,
+            onBackground: theme.colors.onBackground,
+            itemBgColor: theme.colors.primary,
+            itemTextColor: theme.colors.onPrimary,
+            dayTextColor: theme.colors.onBackground,
+            buttonBgColor: theme.colors.primaryContainer,
+            buttonTextColor: theme.colors.onPrimaryContainer,
+            todayTextColor: theme.colors.primary,
+            line: theme.colors.outline,
+            disable: theme.colors.outline,
+            selectedDateBgColor: theme.colors.primary,
+            selectedDateColor: theme.colors.onPrimary,
+            todayBgColor: theme.colors.primaryContainer,
+            todayColor: theme.colors.onPrimaryContainer || "rgb(54, 44, 63)",
+          },
+        }}
       />
     </SafeAreaProvider>
   );

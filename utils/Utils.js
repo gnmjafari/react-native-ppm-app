@@ -42,7 +42,7 @@ export const deleteTaskAndRoutine = async ({ type, id, dispatch }) => {
   await AsyncStorage.setItem(type, JSON.stringify(newArray));
 };
 
-export const createChartData = (plan, routine, i18n, theme, setChartData) => {
+export const createChartData = (plan, routine, i18n, theme) => {
   let labels = [];
   let colors = [];
   let data = [];
@@ -77,5 +77,5 @@ export const createChartData = (plan, routine, i18n, theme, setChartData) => {
     data.push(0);
   }
 
-  return setChartData({ labels, colors, data });
+  return { labels, colors, data };
 };

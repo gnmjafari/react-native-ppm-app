@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
   Appbar,
@@ -30,55 +30,112 @@ import {
   deleteTaskAndRoutine,
 } from "../../utils/Utils";
 
+const useLocales = {
+  fa: {
+    monthNames: [
+      "فروردین",
+      "اردیبهشت",
+      "خرداد",
+      "تیر",
+      "مرداد",
+      "شهریور",
+      "مهر",
+      "آبان",
+      "آذر",
+      "دی",
+      "بهمن",
+      "اسفند",
+    ],
+    monthNamesShort: [
+      "فروردین",
+      "اردیبهشت",
+      "خرداد",
+      "تیر",
+      "مرداد",
+      "شهریور",
+      "مهر",
+      "آبان",
+      "آذر",
+      "دی",
+      "بهمن",
+      "اسفند",
+    ],
+    dayNames: [
+      "شنبه",
+      "یکشنبه",
+      "دوشنبه",
+      "سه‌شنبه",
+      "چهارشنبه",
+      "پنجشنبه",
+      "جمعه",
+    ],
+    dayNamesShort: [
+      "شنبه",
+      "یکشنبه",
+      "دوشنبه",
+      "سه‌شنبه",
+      "چهارشنبه",
+      "پنجشنبه",
+      "جمعه",
+    ],
+  },
+  en: {
+    monthNames: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+
+    monthNamesShort: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    dayNames: [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ],
+    dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  },
+};
+
 const Dashboard = ({ i18n }) => {
   const dispatch = useDispatch();
+
   const { themeMood, lang, routines, plans } = useSelector(
     (state) => state.app
   );
 
-  moment.locale(lang);
-  if (lang == "fa") {
-    moment.loadPersian({ dialect: "persian-modern" });
-  }
-
   const [openAddModal, setOpenAddModal] = useState(false);
-  const [routinesToday, setRoutinesToday] = useState([]);
-  const [tasksToday, setTasksToday] = useState([]);
-  const [chartData, setChartData] = useState({
-    labels: [],
-    colors: [],
-    data: [],
-  });
   const [editData, setEditData] = useState();
   const [visible, setVisible] = useState(false);
 
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
-
-  useEffect(() => {
-    setRoutinesToday(
-      _.filter(
-        routines,
-        (item) =>
-          _.includes(
-            item.repeating,
-            moment(new Date()).locale("en").format("dddd")
-          ) &&
-          item.date == moment(new Date()).locale("en").format("YYYY-MM-DD") &&
-          item
-      )
-    );
-
-    setTasksToday(
-      _.filter(
-        plans,
-        (item) =>
-          item.date == moment(new Date()).locale("en").format("YYYY-MM-DD") &&
-          item
-      )
-    );
-  }, [plans, routines]);
 
   const theme = useTheme();
   const styles = StyleSheet.create({
@@ -127,9 +184,30 @@ const Dashboard = ({ i18n }) => {
     handleOpenAddModal();
   };
 
-  useEffect(() => {
-    createChartData(tasksToday, routinesToday, i18n, theme, setChartData);
-  }, [tasksToday, routinesToday]);
+  const routinesToday = React.useMemo(() => {
+    const data = _.filter(
+      routines,
+      (item) =>
+        _.includes(
+          item.repeating,
+          moment(new Date()).locale("en").format("dddd")
+        ) &&
+        item.date == moment(new Date()).locale("en").format("YYYY-MM-DD") &&
+        item
+    );
+
+    return data || [];
+  }, [routines]);
+
+  const tasksToday = React.useMemo(() => {
+    const data = _.filter(
+      plans,
+      (item) =>
+        item.date == moment(new Date()).locale("en").format("YYYY-MM-DD") &&
+        item
+    );
+    return data || [];
+  }, [plans]);
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -312,7 +390,11 @@ const Dashboard = ({ i18n }) => {
             fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
           }}
         >
-          {moment().format(lang == "fa" ? "jMMMM" : "MMMM")}
+          {
+            useLocales[lang].monthNames[
+              moment().format(lang == "fa" ? "jM" : "M") - 1
+            ]
+          }
         </Text>
         <Text
           style={{
@@ -325,7 +407,7 @@ const Dashboard = ({ i18n }) => {
         </Text>
       </View>
 
-      {!routinesToday.length && (
+      {routinesToday.length <= 0 && (
         <Card
           style={{
             marginHorizontal: 10,
@@ -363,7 +445,7 @@ const Dashboard = ({ i18n }) => {
         </Card>
       )}
 
-      {!tasksToday.length && (
+      {tasksToday.length <= 0 && (
         <Card style={{ marginHorizontal: 10, marginTop: 20 }}>
           <Card.Title
             titleStyle={{
@@ -409,7 +491,11 @@ const Dashboard = ({ i18n }) => {
           />
         )}
 
-        <DashboardChart lang={lang} theme={theme} data={chartData} />
+        <DashboardChart
+          lang={lang}
+          theme={theme}
+          data={createChartData(tasksToday, routinesToday, i18n, theme)}
+        />
 
         <List.Section style={{ width: "100%" }}>
           {routinesToday.length > 0 && (

@@ -12,20 +12,39 @@ import {
   updateRoutines,
 } from "../store";
 import ShowCalendar from "./tabs/ShowCalendar";
-
-const MusicRoute = ({ i18n }) => (
-  <Text style={{ fontFamily: "SpaceMono", fontSize: 40 }}>
-    {i18n.t("tasks")}
-  </Text>
-);
+import moment from "moment-jalaali";
+import fa from "moment/src/locale/fa";
+import Loading from "../component/Loading";
 
 const TabNavigators = ({ i18n }) => {
   const dispatch = useDispatch();
-  const { lang } = useSelector((state) => state.app);
+  const { lang, isLoadingLang } = useSelector((state) => state.app);
   const [index, setIndex] = useState(0);
 
+  const checkLang = React.useMemo(() => {
+    if (lang == "fa") {
+      moment.locale(lang, fa);
+      moment.loadPersian({ dialect: "persian-modern" });
+    } else {
+      moment.locale(lang);
+    }
+
+    return true;
+  }, [lang]);
+
+  const MusicRoute = ({ i18n }) => (
+    <Text
+      style={{
+        fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+        fontSize: 40,
+      }}
+    >
+      {i18n.t("tasks")}
+    </Text>
+  );
+
   const renderScene = BottomNavigation.SceneMap({
-    music: () => MusicRoute({ i18n }),
+    // music: () => MusicRoute({ i18n }),
     dashboard: () => Dashboard({ i18n }),
     ShowCalendar: () => ShowCalendar({ i18n }),
   });
@@ -33,6 +52,7 @@ const TabNavigators = ({ i18n }) => {
   const getPlans = async () => {
     const existingPlans = await AsyncStorage.getItem("plans");
     const existingRoutines = await AsyncStorage.getItem("routines");
+    await AsyncStorage.clear();
     if (existingPlans) {
       const existingArrayPlans = JSON.parse(existingPlans);
       dispatch(updatePlans(existingArrayPlans));
@@ -59,17 +79,17 @@ const TabNavigators = ({ i18n }) => {
     getThemeAndLang();
   }, []);
 
-  return (
+  return checkLang ? (
     <BottomNavigation
       navigationState={{
         index,
         routes: [
-          {
-            key: "music",
-            title: i18n.t("tasks"),
-            focusedIcon: "heart",
-            unfocusedIcon: "heart-outline",
-          },
+          // {
+          //   key: "music",
+          //   title: i18n.t("tasks"),
+          //   focusedIcon: "heart",
+          //   unfocusedIcon: "heart-outline",
+          // },
           {
             key: "dashboard",
             title: i18n.t("dashboard"),
@@ -110,6 +130,8 @@ const TabNavigators = ({ i18n }) => {
         );
       }}
     />
+  ) : (
+    <Loading />
   );
 };
 

@@ -7,6 +7,7 @@ export const appSlice = createSlice({
   name: "app",
   initialState: {
     lang: "en",
+    isLoadingLang: true,
     themeMood: "dark",
     plans: [],
     routines: [],
@@ -15,6 +16,7 @@ export const appSlice = createSlice({
     changeLang: (state, action) => {
       const { payload } = action;
       state.lang = payload;
+      state.isLoadingLang = false;
     },
 
     changeThemeMood: (state, action) => {
@@ -65,7 +67,7 @@ export const appSlice = createSlice({
       const { payload } = action;
       if (payload.type == "plans") {
         state.plans = payload.data;
-      } else if (payload.type == "routine") {
+      } else if (payload.type == "routines") {
         state.routines = payload.data;
       }
     },
