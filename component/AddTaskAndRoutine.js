@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { FlatList, ScrollView, View } from "react-native";
 import {
   Button,
   Checkbox,
@@ -124,13 +124,6 @@ const AddTaskAndRoutine = ({
     dark: {
       background: theme.colors.background,
       onBackground: theme.colors.onBackground,
-      // itemBgColor: theme.colors.primary,
-      // itemTextColor: theme.colors.onPrimary,
-      // dayTextColor: theme.colors.onBackground,
-      // buttonBgColor: theme.colors.primaryContainer,
-      // buttonTextColor: theme.colors.onPrimaryContainer,
-      // todayTextColor: theme.colors.primary,
-      // line: theme.colors.outline,
       disable: theme.colors.outline,
       selectedDateBgColor: theme.colors.primary,
       selectedDateColor: theme.colors.onPrimary,
@@ -140,13 +133,6 @@ const AddTaskAndRoutine = ({
     light: {
       background: theme.colors.background,
       onBackground: theme.colors.onBackground,
-      // itemBgColor: theme.colors.primary,
-      // itemTextColor: theme.colors.onPrimary,
-      // dayTextColor: theme.colors.onBackground,
-      // buttonBgColor: theme.colors.primaryContainer,
-      // buttonTextColor: theme.colors.onPrimaryContainer,
-      // todayTextColor: theme.colors.primary,
-      // line: theme.colors.outline,
       disable: theme.colors.outline,
       selectedDateBgColor: theme.colors.primary,
       selectedDateColor: theme.colors.onPrimary,
@@ -165,348 +151,369 @@ const AddTaskAndRoutine = ({
           close();
         }}
       >
-        {/* <ScrollView> */}
-        <RadioButton.Group
-          onValueChange={(newValue) => setAddType(newValue)}
-          value={addType}
-        >
-          {(!editData || editData.type == "plans") && (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-              }}
-            >
-              <RadioButton value="plans" />
-              <Text
-                style={{
-                  fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-                }}
-              >
-                {i18n.t("task")}
-              </Text>
-            </View>
-          )}
-          {(!editData || editData.type == "routines") && (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-              }}
-            >
-              <RadioButton value="routines" />
-              <Text
-                style={{
-                  fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-                }}
-              >
-                {i18n.t("routine")}
-              </Text>
-            </View>
-          )}
-        </RadioButton.Group>
-
-        <View>
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                mode="outlined"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                label={i18n.t("title")}
-                style={{
-                  fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-                  marginTop: 10,
-                }}
-              />
-            )}
-            name="title"
-            rules={{ required: i18n.t("is_required") }}
-            defaultValue=""
-          />
-          {errors.title && (
-            <HelperText
-              style={{
-                fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-              }}
-              type="error"
-            >
-              {errors?.title?.message}
-            </HelperText>
-          )}
-
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                mode="outlined"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                label={i18n.t("description")}
-                style={{
-                  fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-                  marginTop: 10,
-                }}
-              />
-            )}
-            name="description"
-            rules={{ required: i18n.t("is_required") }}
-            defaultValue=""
-          />
-          {errors.description && (
-            <HelperText
-              style={{
-                fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-              }}
-              type="error"
-            >
-              {errors?.description?.message}
-            </HelperText>
-          )}
-
-          {addType == "plans" ? (
-            <View style={{ marginTop: 20 }}>
-              <Controller
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Calendar
-                    themeMode={themeMode}
-                    onPress={({ en }) => {
-                      onChange(en);
-                    }}
-                    value={value}
-                    title={i18n.t("date")}
-                    lang={lang}
-                    theme={themeCalendar}
-                  />
-                )}
-                name="date"
-                rules={
-                  addType == "plans" && { required: i18n.t("is_required") }
-                }
-                defaultValue=""
-              />
-              {errors.date && (
-                <HelperText
-                  style={{
-                    fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-                  }}
-                  type="error"
+        <FlatList
+          data={[1]}
+          keyExtractor={() => "key"}
+          renderItem={() => {
+            return (
+              <>
+                <RadioButton.Group
+                  onValueChange={(newValue) => setAddType(newValue)}
+                  value={addType}
                 >
-                  {errors?.date?.message}
-                </HelperText>
-              )}
-            </View>
-          ) : (
-            <>
-              <View style={{ marginTop: 20 }}>
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <Calendar
-                      themeMode={themeMode}
-                      onPress={({ en }) => {
-                        onChange(en);
+                  {(!editData || editData.type == "plans") && (
+                    <View
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
                       }}
-                      value={value}
-                      title={i18n.t("start_routine")}
-                      i18n={lang}
-                      theme={themeCalendar}
-                    />
+                    >
+                      <RadioButton value="plans" />
+                      <Text
+                        style={{
+                          fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                        }}
+                      >
+                        {i18n.t("task")}
+                      </Text>
+                    </View>
                   )}
-                  name="start_routine"
-                  rules={{ required: i18n.t("is_required") }}
-                  defaultValue=""
-                />
-
-                {errors.start_routine && (
-                  <HelperText
-                    style={{
-                      fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-                    }}
-                    type="error"
-                  >
-                    {errors?.start_routine?.message}
-                  </HelperText>
-                )}
-              </View>
-              <View style={{ marginTop: 20 }}>
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <Calendar
-                      themeMode={themeMode}
-                      onPress={({ en }) => {
-                        onChange(en);
+                  {(!editData || editData.type == "routines") && (
+                    <View
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
                       }}
-                      value={value}
-                      title={i18n.t("end_routine")}
-                      lang={lang}
-                      theme={themeCalendar}
-                    />
+                    >
+                      <RadioButton value="routines" />
+                      <Text
+                        style={{
+                          fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                        }}
+                      >
+                        {i18n.t("routine")}
+                      </Text>
+                    </View>
                   )}
-                  name="end_routine"
-                  rules={{ required: i18n.t("is_required") }}
-                  defaultValue=""
-                />
+                </RadioButton.Group>
 
-                {errors.end_routine && (
-                  <HelperText
-                    style={{
-                      fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-                    }}
-                    type="error"
-                  >
-                    {errors?.end_routine?.message}
-                  </HelperText>
-                )}
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  marginTop: 15,
-                  gap: 15,
-                }}
-              >
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => {
-                    return (
-                      <>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Checkbox
-                            status={value.length >= 7 ? "checked" : "unchecked"}
-                            onPress={() => {
-                              if (value.length >= 7) {
-                                onChange([]);
-                              } else {
-                                onChange(days);
-                              }
+                <View>
+                  <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextInput
+                        mode="outlined"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        label={i18n.t("title")}
+                        style={{
+                          fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                          marginTop: 10,
+                        }}
+                      />
+                    )}
+                    name="title"
+                    rules={{ required: i18n.t("is_required") }}
+                    defaultValue=""
+                  />
+                  {errors.title && (
+                    <HelperText
+                      style={{
+                        fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                      }}
+                      type="error"
+                    >
+                      {errors?.title?.message}
+                    </HelperText>
+                  )}
+
+                  <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextInput
+                        mode="outlined"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        label={i18n.t("description")}
+                        style={{
+                          fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                          marginTop: 10,
+                        }}
+                      />
+                    )}
+                    name="description"
+                    rules={{ required: i18n.t("is_required") }}
+                    defaultValue=""
+                  />
+                  {errors.description && (
+                    <HelperText
+                      style={{
+                        fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                      }}
+                      type="error"
+                    >
+                      {errors?.description?.message}
+                    </HelperText>
+                  )}
+
+                  {addType == "plans" ? (
+                    <View style={{ marginTop: 20 }}>
+                      <Controller
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <Calendar
+                            themeMode={themeMode}
+                            onPress={({ en }) => {
+                              onChange(en);
                             }}
+                            value={value}
+                            title={i18n.t("date")}
+                            lang={lang}
+                            theme={themeCalendar}
                           />
-                          <Text
+                        )}
+                        name="date"
+                        rules={
+                          addType == "plans" && {
+                            required: i18n.t("is_required"),
+                          }
+                        }
+                        defaultValue=""
+                      />
+                      {errors.date && (
+                        <HelperText
+                          style={{
+                            fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                          }}
+                          type="error"
+                        >
+                          {errors?.date?.message}
+                        </HelperText>
+                      )}
+                    </View>
+                  ) : (
+                    <>
+                      <View style={{ marginTop: 20 }}>
+                        <Controller
+                          control={control}
+                          render={({ field: { onChange, value } }) => (
+                            <Calendar
+                              themeMode={themeMode}
+                              onPress={({ en }) => {
+                                onChange(en);
+                              }}
+                              value={value}
+                              title={i18n.t("start_routine")}
+                              i18n={lang}
+                              theme={themeCalendar}
+                            />
+                          )}
+                          name="start_routine"
+                          rules={{ required: i18n.t("is_required") }}
+                          defaultValue=""
+                        />
+
+                        {errors.start_routine && (
+                          <HelperText
                             style={{
                               fontFamily:
                                 lang == "fa" ? "IRANSans" : "SpaceMono",
                             }}
+                            type="error"
                           >
-                            {i18n.t("everyday")}
-                          </Text>
-                        </View>
-                        {value.length < 7 &&
-                          _.map(days, (item, key) => {
-                            return (
-                              <View
-                                style={{
-                                  flexDirection: "row",
-                                  alignItems: "center",
-                                }}
-                                key={key}
-                              >
-                                <Checkbox
-                                  status={
-                                    _.includes(value, item)
-                                      ? "checked"
-                                      : "unchecked"
-                                  }
-                                  onPress={() => {
-                                    let copy = [...value];
+                            {errors?.start_routine?.message}
+                          </HelperText>
+                        )}
+                      </View>
+                      <View style={{ marginTop: 20 }}>
+                        <Controller
+                          control={control}
+                          render={({ field: { onChange, onBlur, value } }) => (
+                            <Calendar
+                              themeMode={themeMode}
+                              onPress={({ en }) => {
+                                onChange(en);
+                              }}
+                              value={value}
+                              title={i18n.t("end_routine")}
+                              lang={lang}
+                              theme={themeCalendar}
+                            />
+                          )}
+                          name="end_routine"
+                          rules={{ required: i18n.t("is_required") }}
+                          defaultValue=""
+                        />
 
-                                    if (_.includes(value, item)) {
-                                      _.remove(copy, (i) => i === item);
-                                      onChange(copy);
-                                    } else {
-                                      copy.push(item);
-                                      onChange(copy);
-                                    }
-                                  }}
-                                />
-                                <Text
+                        {errors.end_routine && (
+                          <HelperText
+                            style={{
+                              fontFamily:
+                                lang == "fa" ? "IRANSans" : "SpaceMono",
+                            }}
+                            type="error"
+                          >
+                            {errors?.end_routine?.message}
+                          </HelperText>
+                        )}
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                          marginTop: 15,
+                          gap: 15,
+                        }}
+                      >
+                        <Controller
+                          control={control}
+                          render={({ field: { onChange, onBlur, value } }) => {
+                            return (
+                              <>
+                                <View
                                   style={{
-                                    fontFamily:
-                                      lang == "fa" ? "IRANSans" : "SpaceMono",
+                                    flexDirection: "row",
+                                    alignItems: "center",
                                   }}
                                 >
-                                  {i18n.t(item)}
-                                </Text>
-                              </View>
+                                  <Checkbox
+                                    status={
+                                      value.length >= 7
+                                        ? "checked"
+                                        : "unchecked"
+                                    }
+                                    onPress={() => {
+                                      if (value.length >= 7) {
+                                        onChange([]);
+                                      } else {
+                                        onChange(days);
+                                      }
+                                    }}
+                                  />
+                                  <Text
+                                    style={{
+                                      fontFamily:
+                                        lang == "fa" ? "IRANSans" : "SpaceMono",
+                                    }}
+                                  >
+                                    {i18n.t("everyday")}
+                                  </Text>
+                                </View>
+                                {value.length < 7 &&
+                                  _.map(days, (item, key) => {
+                                    return (
+                                      <View
+                                        style={{
+                                          flexDirection: "row",
+                                          alignItems: "center",
+                                        }}
+                                        key={key}
+                                      >
+                                        <Checkbox
+                                          status={
+                                            _.includes(value, item)
+                                              ? "checked"
+                                              : "unchecked"
+                                          }
+                                          onPress={() => {
+                                            let copy = [...value];
+
+                                            if (_.includes(value, item)) {
+                                              _.remove(copy, (i) => i === item);
+                                              onChange(copy);
+                                            } else {
+                                              copy.push(item);
+                                              onChange(copy);
+                                            }
+                                          }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontFamily:
+                                              lang == "fa"
+                                                ? "IRANSans"
+                                                : "SpaceMono",
+                                          }}
+                                        >
+                                          {i18n.t(item)}
+                                        </Text>
+                                      </View>
+                                    );
+                                  })}
+                              </>
                             );
-                          })}
-                      </>
-                    );
+                          }}
+                          name="repeating"
+                          rules={{
+                            required: i18n.t("is_required"),
+                            validate: (value) =>
+                              value.length > 0 || i18n.t("is_required"),
+                          }}
+                          defaultValue={days}
+                        />
+                      </View>
+                    </>
+                  )}
+                  {errors.repeating && (
+                    <HelperText
+                      style={{
+                        fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                      }}
+                      type="error"
+                    >
+                      {errors?.repeating?.message}
+                    </HelperText>
+                  )}
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 40,
+                    justifyContent: "flex-end",
+                    gap: 10,
                   }}
-                  name="repeating"
-                  rules={{
-                    required: i18n.t("is_required"),
-                    validate: (value) =>
-                      value.length > 0 || i18n.t("is_required"),
-                  }}
-                  defaultValue={days}
-                />
-              </View>
-            </>
-          )}
-          {errors.repeating && (
-            <HelperText
-              style={{
-                fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-              }}
-              type="error"
-            >
-              {errors?.repeating?.message}
-            </HelperText>
-          )}
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: 40,
-            justifyContent: "flex-end",
-            gap: 10,
+                >
+                  <Button
+                    mode="outlined"
+                    onPress={() => {
+                      reset();
+                      setAddType("plans");
+                      close();
+                      setEditData();
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                      }}
+                    >
+                      {i18n.t("close")}
+                    </Text>
+                  </Button>
+                  <Button
+                    mode="contained-tonal"
+                    onPress={handleSubmit(onSubmit)}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
+                      }}
+                    >
+                      {i18n.t("submit")}
+                    </Text>
+                  </Button>
+                </View>
+              </>
+            );
           }}
-        >
-          <Button
-            mode="outlined"
-            onPress={() => {
-              reset();
-              setAddType("plans");
-              close();
-              setEditData();
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-              }}
-            >
-              {i18n.t("close")}
-            </Text>
-          </Button>
-          <Button mode="contained-tonal" onPress={handleSubmit(onSubmit)}>
-            <Text
-              style={{
-                fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-              }}
-            >
-              {i18n.t("submit")}
-            </Text>
-          </Button>
-        </View>
-        {/* </ScrollView> */}
+        />
       </Modal>
     </Portal>
   );
