@@ -21,16 +21,15 @@ const TabNavigators = ({ i18n }) => {
   const { lang, isLoadingLang } = useSelector((state) => state.app);
   const [index, setIndex] = useState(0);
 
-  moment.locale("fa");
-  moment.locale("en");
-
-  useEffect(() => {
+  const checkLang = React.useMemo(() => {
     if (lang == "fa") {
-      moment.updateLocale(lang, fa);
+      moment.locale(lang, fa);
       moment.loadPersian({ dialect: "persian-modern" });
     } else {
-      moment.updateLocale(lang);
+      moment.locale(lang);
     }
+
+    return true;
   }, [lang]);
 
   const MusicRoute = ({ i18n }) => (
@@ -53,6 +52,7 @@ const TabNavigators = ({ i18n }) => {
   const getPlans = async () => {
     const existingPlans = await AsyncStorage.getItem("plans");
     const existingRoutines = await AsyncStorage.getItem("routines");
+    await AsyncStorage.clear();
     if (existingPlans) {
       const existingArrayPlans = JSON.parse(existingPlans);
       dispatch(updatePlans(existingArrayPlans));
@@ -79,7 +79,7 @@ const TabNavigators = ({ i18n }) => {
     getThemeAndLang();
   }, []);
 
-  return !isLoadingLang ? (
+  return checkLang ? (
     <BottomNavigation
       navigationState={{
         index,
