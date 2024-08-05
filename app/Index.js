@@ -8,9 +8,7 @@ import { I18n } from "i18n-js";
 const Index = () => {
   const { theme } = useMaterial3Theme();
   const lang = useSelector((state) => state.app.lang);
-
   const themeMood = useSelector((state) => state.app.themeMood);
-  console.log("langIndex", lang);
 
   const translations = {
     en: require("../lang/en.json"),

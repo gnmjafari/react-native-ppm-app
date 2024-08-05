@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
   Appbar,
@@ -130,10 +130,7 @@ const Dashboard = ({ i18n }) => {
   const [expandedPlans, setExpandedPlans] = useState(false);
   const [expandedRoutines, setExpandedPlansRoutines] = useState(false);
 
-  const handlePressPlans = () => {
-    console.log("expandedPlans", expandedPlans);
-    setExpandedPlans(!expandedPlans);
-  };
+  const handlePressPlans = () => setExpandedPlans(!expandedPlans);
   const handlePressRoutines = () => setExpandedPlansRoutines(!expandedRoutines);
 
   const openMenu = () => setVisible(true);

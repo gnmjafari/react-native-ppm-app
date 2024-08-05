@@ -103,7 +103,7 @@ const AgendaComponent = ({ i18n }) => {
             selectedDateBgColor: theme.colors.primary,
             selectedDateColor: theme.colors.onPrimary,
             todayBgColor: theme.colors.primaryContainer,
-            todayColor: theme.colors.onPrimaryContainer || "rgb(54, 44, 63)",
+            todayColor: theme.colors.onPrimaryContainer,
           },
           light: {
             background: theme.colors.background,
@@ -119,7 +119,7 @@ const AgendaComponent = ({ i18n }) => {
             selectedDateBgColor: theme.colors.primary,
             selectedDateColor: theme.colors.onPrimary,
             todayBgColor: theme.colors.primaryContainer,
-            todayColor: theme.colors.onPrimaryContainer || "rgb(54, 44, 63)",
+            todayColor: theme.colors.onPrimaryContainer,
           },
         }}
       />
