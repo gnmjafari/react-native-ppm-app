@@ -248,19 +248,8 @@ const AddTaskAndRoutine = ({
                       />
                     )}
                     name="description"
-                    rules={{ required: i18n.t("is_required") }}
                     defaultValue=""
                   />
-                  {errors.description && (
-                    <HelperText
-                      style={{
-                        fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
-                      }}
-                      type="error"
-                    >
-                      {errors?.description?.message}
-                    </HelperText>
-                  )}
 
                   {addType == "plans" ? (
                     <View style={{ marginTop: 20 }}>
