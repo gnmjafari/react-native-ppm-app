@@ -61,7 +61,7 @@ const DashboardChart = ({ lang, data, theme }) => {
                 fontFamily: lang == "fa" ? "IRANSans" : "SpaceMono",
               }}
             >
-              {label} : {data.data[index] * 100} %
+              {label} : {Math.ceil(data.data[index] * 100)} %
             </Text>
           </View>
         ))}

@@ -310,8 +310,8 @@ const AddTaskAndRoutine = ({
                               }}
                               value={value}
                               title={i18n.t("start_routine")}
-                              i18n={lang}
                               theme={themeCalendar}
+                              lang={lang}
                             />
                           )}
                           name="start_routine"
