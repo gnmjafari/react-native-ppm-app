@@ -71,6 +71,16 @@ export const appSlice = createSlice({
         state.routines = payload.data;
       }
     },
+
+    editPlanAndRoutine: (state, action) => {
+      const { payload } = action;
+
+      if (payload.type == "plans") {
+        state.plans = payload.data;
+      } else if (payload.type == "routines") {
+        state.routines = payload.data;
+      }
+    },
   },
 });
 
@@ -93,4 +103,5 @@ export const {
   deletePlan,
   deleteRoutine,
   checkedPlanOrRoutine,
+  editPlanAndRoutine,
 } = appSlice.actions;

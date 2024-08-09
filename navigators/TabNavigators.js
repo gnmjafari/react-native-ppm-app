@@ -47,6 +47,7 @@ const TabNavigators = ({ i18n }) => {
   const getPlans = async () => {
     const existingPlans = await AsyncStorage.getItem("plans");
     const existingRoutines = await AsyncStorage.getItem("routines");
+
     if (existingPlans) {
       const existingArrayPlans = JSON.parse(existingPlans);
       dispatch(updatePlans(existingArrayPlans));

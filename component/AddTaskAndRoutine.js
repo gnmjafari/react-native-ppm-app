@@ -16,7 +16,8 @@ import _ from "lodash";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Calendar } from "react-native-multipurpose-calendar";
 import { useDispatch } from "react-redux";
-import { addPlan, addRoutine } from "../store";
+import { addPlan, addRoutine, editPlanAndRoutine } from "../store";
+import moment from "moment-jalaali";
 
 const days = [
   "Sunday",
@@ -65,9 +66,12 @@ const AddTaskAndRoutine = ({
         createData = {
           id: data?.id || `${createId}_plans`,
           title: data.title,
-          date: data.date,
+          date:
+            lang == "fa"
+              ? moment(data.date, "jYYYY-jMM-jDD").format("YYYY-MM-DD")
+              : data.date,
           description: data.description,
-          checked: false,
+          checked: data.checked ? data.checked : false,
           type: "plans",
         };
 
@@ -76,8 +80,16 @@ const AddTaskAndRoutine = ({
         }
       } else if (addType == "routines") {
         let daysToAdd = [];
-        const startDate = new Date(data.start_routine);
-        const endDate = new Date(data.end_routine);
+        const startDate = new Date(
+          lang == "fa"
+            ? moment(data.start_routine, "jYYYY-jMM-jDD").format("YYYY-MM-DD")
+            : data.start_routine
+        );
+        const endDate = new Date(
+          lang == "fa"
+            ? moment(data.end_routine, "jYYYY-jMM-jDD").format("YYYY-MM-DD")
+            : data.end_routine
+        );
         const repeatingDays = data.repeating;
 
         while (startDate <= endDate) {
@@ -89,24 +101,42 @@ const AddTaskAndRoutine = ({
         }
 
         createData = daysToAdd.map((day, index) => ({
-          id: data?.id || `${createId + index}_routines`,
+          id: data?.id || `${createId}_routines`,
           title: data.title,
+          start_routine:
+            lang == "fa"
+              ? moment(data.start_routine, "jYYYY-jMM-jDD").format("YYYY-MM-DD")
+              : data.start_routine,
+          end_routine:
+            lang == "fa"
+              ? moment(data.end_routine, "jYYYY-jMM-jDD").format("YYYY-MM-DD")
+              : data.end_routine,
           date: day.toISOString().split("T")[0],
           description: data.description,
           repeating: repeatingDays,
           checked: false,
           type: "routines",
         }));
+
         if (!editData) {
           dispatch(addRoutine(createData));
         }
       }
 
-      if (editData) {
+      if (editData && addType == "plans") {
         const editArray = _.map(existingArray, (item) =>
           item.id == data.id ? createData : item
         );
         existingArray = editArray;
+        dispatch(editPlanAndRoutine({ type: addType, data: existingArray }));
+      } else if (editData && addType == "routines") {
+        const filterOldThisRoutine = _.filter(
+          existingArray,
+          (item) => item.id != data.id
+        );
+
+        existingArray = _.concat(filterOldThisRoutine || [], createData);
+        dispatch(editPlanAndRoutine({ type: addType, data: existingArray }));
       } else {
         existingArray = _.concat(existingArray || [], createData);
       }
@@ -258,8 +288,12 @@ const AddTaskAndRoutine = ({
                         render={({ field: { onChange, value } }) => (
                           <Calendar
                             themeMode={themeMode}
-                            onPress={({ en }) => {
-                              onChange(en);
+                            onPress={({ en, fa }) => {
+                              if (lang == "fa") {
+                                onChange(fa);
+                              } else {
+                                onChange(en);
+                              }
                             }}
                             value={value}
                             title={i18n.t("date")}
@@ -294,8 +328,12 @@ const AddTaskAndRoutine = ({
                           render={({ field: { onChange, value } }) => (
                             <Calendar
                               themeMode={themeMode}
-                              onPress={({ en }) => {
-                                onChange(en);
+                              onPress={({ en, fa }) => {
+                                if (lang == "fa") {
+                                  onChange(fa);
+                                } else {
+                                  onChange(en);
+                                }
                               }}
                               value={value}
                               title={i18n.t("start_routine")}
@@ -326,8 +364,12 @@ const AddTaskAndRoutine = ({
                           render={({ field: { onChange, onBlur, value } }) => (
                             <Calendar
                               themeMode={themeMode}
-                              onPress={({ en }) => {
-                                onChange(en);
+                              onPress={({ en, fa }) => {
+                                if (lang == "fa") {
+                                  onChange(fa);
+                                } else {
+                                  onChange(en);
+                                }
                               }}
                               value={value}
                               title={i18n.t("end_routine")}

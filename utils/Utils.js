@@ -2,7 +2,7 @@ import _ from "lodash";
 import { checkedPlanOrRoutine, deletePlan, deleteRoutine } from "../store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const changeChecked = async ({ type, id, dispatch }) => {
+export const changeChecked = async ({ type, id, dispatch, date }) => {
   let existingArray = [];
   if (type == "plans") {
     const existingData = await AsyncStorage.getItem(type);
@@ -16,7 +16,7 @@ export const changeChecked = async ({ type, id, dispatch }) => {
     }
   }
   const newArray = _.map(existingArray, (item) =>
-    item.id == id ? { ...item, checked: !item.checked } : item
+    item.id == id && item.date == date ? { ...item, checked: !item.checked } : item
   );
 
   dispatch(checkedPlanOrRoutine({ type, data: newArray }));

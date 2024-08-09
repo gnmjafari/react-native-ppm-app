@@ -53,7 +53,12 @@ const AgendaComponent = ({ i18n }) => {
             uncheckedColor={theme.colors.errorContainer}
             status={item.checked ? "checked" : "unchecked"}
             onPress={() => {
-              changeChecked({ type: item.type, id: item.id, dispatch });
+              changeChecked({
+                type: item.type,
+                id: item.id,
+                dispatch,
+                date: item.date,
+              });
             }}
           />
           <Text

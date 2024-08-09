@@ -180,32 +180,59 @@ const Dashboard = ({ i18n }) => {
       }
     }
     const editArray = _.filter(existingArray, (item) => item.id == id && item);
-    setEditData({ type: type, data: editArray[0] });
+    if (type == "plans") {
+      setEditData({
+        type: type,
+        data: {
+          ...editArray[0],
+          date:
+            lang == "fa"
+              ? moment(editArray[0].date).format("jYYYY-jMM-jDD")
+              : editArray[0].date,
+        },
+      });
+    } else if (type == "routines") {
+      setEditData({
+        type: type,
+        data: {
+          ...editArray[0],
+          start_routine:
+            lang == "fa"
+              ? moment(editArray[0].start_routine).format("jYYYY-jMM-jDD")
+              : editArray[0].start_routine,
+          end_routine:
+            lang == "fa"
+              ? moment(editArray[0].end_routine).format("jYYYY-jMM-jDD")
+              : editArray[0].end_routine,
+        },
+      });
+    }
     handleOpenAddModal();
   };
 
   const routinesToday = React.useMemo(() => {
-    const data = _.filter(
-      routines,
-      (item) =>
+    const data = _.filter(routines, (item) => {
+      return (
         _.includes(
           item.repeating,
           moment(new Date()).locale("en").format("dddd")
         ) &&
         item.date == moment(new Date()).locale("en").format("YYYY-MM-DD") &&
         item
-    );
+      );
+    });
 
     return data || [];
   }, [routines]);
 
   const tasksToday = React.useMemo(() => {
-    const data = _.filter(
-      plans,
-      (item) =>
+    const data = _.filter(plans, (item) => {
+      return (
         item.date == moment(new Date()).locale("en").format("YYYY-MM-DD") &&
         item
-    );
+      );
+    });
+
     return data || [];
   }, [plans]);
 
@@ -522,6 +549,7 @@ const Dashboard = ({ i18n }) => {
                       type: "routines",
                       id: item.id,
                       dispatch,
+                      date: item.date,
                     });
                   const onDelete = () =>
                     deleteTaskAndRoutine({
@@ -572,6 +600,7 @@ const Dashboard = ({ i18n }) => {
                       type: "plans",
                       id: item.id,
                       dispatch,
+                      date: item.date,
                     });
                   const onDelete = () =>
                     deleteTaskAndRoutine({
