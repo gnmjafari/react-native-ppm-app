@@ -20,6 +20,15 @@ The application allows you to view the percentage progress of your routines and 
 ## Displaying routines and schedules within a calendar:
 You will be able to view your routines and schedules in the form of a calendar within the application, allowing for more precise timing.
 
+# image PPM app
+
+  <img src="https://github.com/gnmjafari/react-native-ppm-app/blob/main/assets/image/dark%20en.jpg?raw=true" style="width: 300px; height: auto;">
+  <img src="https://github.com/gnmjafari/react-native-ppm-app/blob/main/assets/image/dark%20fa.jpg?raw=true" style="width: 300px; height: auto;">
+  <img src="https://github.com/gnmjafari/react-native-ppm-app/blob/main/assets/image/light%20en.jpg?raw=true" style="width: 300px; height: auto;">
+  <img src="https://github.com/gnmjafari/react-native-ppm-app/blob/main/assets/image/light%20fa.jpg?raw=true" style="width: 300px; height: auto;">
+  <img src="https://github.com/gnmjafari/react-native-ppm-app/blob/main/assets/image/calendar%20dark%20en%202.jpg?raw=true" style="width: 300px; height: auto;">
+  <img src="https://github.com/gnmjafari/react-native-ppm-app/blob/main/assets/image/calendar%20dark%20fa%202.jpg?raw=true" style="width: 300px; height: auto;">
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
