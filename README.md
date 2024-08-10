@@ -1,3 +1,25 @@
+# PPM (Personal Planning Management)
+
+### The PPM app, short for Personal Planning Management, is an intelligent tool for personal planning and daily task management. This app allows effective scheduling and task prioritization, enabling you to precisely manage your daily routines and make the most of your time. With PPM, everything is at your fingertips to assist you in planning your day-to-day life at its best.
+
+# features:
+- [x] Creating a routine within a selected time range
+- [x] Creating a daily schedule
+- [x] Displaying the percentage completion of routines and schedules with a chart
+- [x] Displaying routines and schedules within a calendar
+ 
+## Creating a routine within a selected time range :
+You can plan your daily or weekly routines and set them to repeat at specific intervals. For example, you can exercise on Mondays and Tuesdays or read a book every day
+
+## Creating a daily schedule : 
+You can define your daily schedule with details.
+
+## Displaying the percentage completion of routines and schedules with a chart:
+The application allows you to view the percentage progress of your routines and schedules in a chart or numerical format, enabling you to track your progress and improve your daily plan.
+
+## Displaying routines and schedules within a calendar:
+You will be able to view your routines and schedules in the form of a calendar within the application, allowing for more precise timing.
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
