@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/logo.jpeg",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.gnmjafari.PPM"
+      "package": "PPM"
     },
     "web": {
       "favicon": "./assets/logo.jpeg"
