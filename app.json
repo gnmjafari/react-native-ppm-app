@@ -6,7 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/logo.jpeg",
     "userInterfaceStyle": "light",
-    "plugins": ["./android-manifest.plugin.js"],
+    "plugins": [
+      "./android-manifest.plugin.js"
+    ],
     "splash": {
       "image": "./assets/logo.jpeg",
       "resizeMode": "contain",
@@ -20,7 +22,7 @@
         "foregroundImage": "./assets/logo.jpeg",
         "backgroundColor": "#ffffff"
       },
-      "package": "PPM",
+      "package": "PPM.app",
       "versionCode": 1
     },
     "web": {
