@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/logo.jpeg",
         "backgroundColor": "#ffffff"
       },
-      "package": "PPM"
+      "package": "PPM",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/logo.jpeg"
