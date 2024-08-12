@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/logo.jpeg",
     "userInterfaceStyle": "light",
+    "plugins": ["./android-manifest.plugin.js"],
     "splash": {
       "image": "./assets/logo.jpeg",
       "resizeMode": "contain",
